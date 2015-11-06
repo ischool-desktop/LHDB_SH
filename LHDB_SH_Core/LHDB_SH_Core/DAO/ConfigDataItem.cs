@@ -13,9 +13,9 @@ namespace LHDB_SH_Core.DAO
         public string Name { get; set; }
 
         /// <summary>
-        /// 類別名稱
+        /// 對照明稱
         /// </summary>
-        public string TagName { get; set; }
+        public string TargetName { get; set; }
 
         /// <summary>
         /// 值
