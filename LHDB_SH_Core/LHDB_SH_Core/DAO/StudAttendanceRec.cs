@@ -10,6 +10,12 @@ namespace LHDB_SH_Core.DAO
     /// </summary>
     public class StudAttendanceRec
     {
+
+        /// <summary>
+        /// 學生系統編號
+        /// </summary>
+        public string StudentID { get; set; }
+
         /// <summary>
         /// 身分證號
         /// </summary>

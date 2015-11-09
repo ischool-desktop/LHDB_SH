@@ -19,7 +19,7 @@ namespace LHDB_SH_Core.DAO
             //取得udt資料
             AccessHelper accHelper = new AccessHelper();
             udt_ConfigData data = null;
-            string strQuery = "where config_name=" + ConfigName;
+            string strQuery = "config_name='" + ConfigName+"'";
             List<udt_ConfigData> datas = accHelper.Select<udt_ConfigData>(strQuery);
 
             if (datas.Count > 0)

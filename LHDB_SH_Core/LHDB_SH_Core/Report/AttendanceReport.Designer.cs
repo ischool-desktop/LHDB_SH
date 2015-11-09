@@ -30,12 +30,12 @@
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.iptSchoolYear = new DevComponents.Editors.IntegerInput();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
             this.iptSemester = new DevComponents.Editors.IntegerInput();
             this.dgData = new DevComponents.DotNetBar.Controls.DataGridViewX();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colType = new DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn();
@@ -43,11 +43,15 @@
             this.btnExit = new DevComponents.DotNetBar.ButtonX();
             this.labelX3 = new DevComponents.DotNetBar.LabelX();
             this.labelX4 = new DevComponents.DotNetBar.LabelX();
-            this.lvPeriod = new DevComponents.DotNetBar.Controls.ListViewEx();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.dgPerdata = new DevComponents.DotNetBar.Controls.DataGridViewX();
+            this.colPerName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colPerType = new DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn();
             ((System.ComponentModel.ISupportInitialize)(this.iptSchoolYear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iptSemester)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgPerdata)).BeginInit();
             this.SuspendLayout();
             // 
             // iptSchoolYear
@@ -118,9 +122,8 @@
             // 
             // dgData
             // 
-            this.dgData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgData.AllowUserToAddRows = false;
+            this.dgData.AllowUserToDeleteRows = false;
             this.dgData.BackgroundColor = System.Drawing.Color.White;
             this.dgData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -139,7 +142,7 @@
             this.dgData.Location = new System.Drawing.Point(16, 83);
             this.dgData.Name = "dgData";
             this.dgData.RowTemplate.Height = 24;
-            this.dgData.Size = new System.Drawing.Size(403, 190);
+            this.dgData.Size = new System.Drawing.Size(360, 262);
             this.dgData.TabIndex = 4;
             // 
             // colName
@@ -150,8 +153,9 @@
             // 
             // colValue
             // 
-            this.colValue.HeaderText = "缺勤代碼";
+            this.colValue.HeaderText = "缺曠代碼";
             this.colValue.Name = "colValue";
+            this.colValue.ReadOnly = true;
             // 
             // colType
             // 
@@ -159,8 +163,9 @@
             this.colType.DropDownHeight = 106;
             this.colType.DropDownWidth = 121;
             this.colType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.colType.HeaderText = "缺曠名稱";
+            this.colType.HeaderText = "假別名稱";
             this.colType.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.colType.IntegralHeight = false;
             this.colType.ItemHeight = 17;
             this.colType.Name = "colType";
             this.colType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
@@ -173,7 +178,7 @@
             this.btnExport.AutoSize = true;
             this.btnExport.BackColor = System.Drawing.Color.Transparent;
             this.btnExport.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExport.Location = new System.Drawing.Point(256, 365);
+            this.btnExport.Location = new System.Drawing.Point(439, 359);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(75, 25);
             this.btnExport.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -188,7 +193,7 @@
             this.btnExit.AutoSize = true;
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExit.Location = new System.Drawing.Point(346, 365);
+            this.btnExit.Location = new System.Drawing.Point(529, 359);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 25);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -208,11 +213,11 @@
             // 
             this.labelX3.BackgroundStyle.Class = "";
             this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX3.Location = new System.Drawing.Point(16, 282);
+            this.labelX3.Location = new System.Drawing.Point(393, 56);
             this.labelX3.Name = "labelX3";
-            this.labelX3.Size = new System.Drawing.Size(60, 21);
+            this.labelX3.Size = new System.Drawing.Size(87, 21);
             this.labelX3.TabIndex = 8;
-            this.labelX3.Text = "統計節次";
+            this.labelX3.Text = "節次統計設定";
             // 
             // labelX4
             // 
@@ -227,31 +232,59 @@
             this.labelX4.Name = "labelX4";
             this.labelX4.Size = new System.Drawing.Size(87, 21);
             this.labelX4.TabIndex = 9;
-            this.labelX4.Text = "缺勤對照設定";
+            this.labelX4.Text = "假別統計設定";
             // 
-            // lvPeriod
+            // dgPerdata
             // 
-            this.lvPeriod.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgPerdata.AllowUserToAddRows = false;
+            this.dgPerdata.AllowUserToDeleteRows = false;
+            this.dgPerdata.BackgroundColor = System.Drawing.Color.White;
+            this.dgPerdata.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgPerdata.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colPerName,
+            this.colPerType});
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgPerdata.DefaultCellStyle = dataGridViewCellStyle4;
+            this.dgPerdata.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
+            this.dgPerdata.Location = new System.Drawing.Point(392, 83);
+            this.dgPerdata.Name = "dgPerdata";
+            this.dgPerdata.RowTemplate.Height = 24;
+            this.dgPerdata.Size = new System.Drawing.Size(212, 262);
+            this.dgPerdata.TabIndex = 10;
             // 
+            // colPerName
             // 
+            this.colPerName.HeaderText = "節次";
+            this.colPerName.Name = "colPerName";
+            this.colPerName.ReadOnly = true;
+            this.colPerName.Width = 60;
             // 
-            this.lvPeriod.Border.Class = "ListViewBorder";
-            this.lvPeriod.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.lvPeriod.Location = new System.Drawing.Point(16, 307);
-            this.lvPeriod.Name = "lvPeriod";
-            this.lvPeriod.Size = new System.Drawing.Size(403, 45);
-            this.lvPeriod.TabIndex = 10;
-            this.lvPeriod.UseCompatibleStateImageBehavior = false;
-            this.lvPeriod.View = System.Windows.Forms.View.Details;
+            // colPerType
+            // 
+            this.colPerType.DisplayMember = "Text";
+            this.colPerType.DropDownHeight = 106;
+            this.colPerType.DropDownWidth = 121;
+            this.colPerType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.colPerType.HeaderText = "節次名稱";
+            this.colPerType.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.colPerType.IntegralHeight = false;
+            this.colPerType.ItemHeight = 17;
+            this.colPerType.Name = "colPerType";
+            this.colPerType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.colPerType.RightToLeft = System.Windows.Forms.RightToLeft.No;
             // 
             // AttendanceReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(434, 398);
-            this.Controls.Add(this.lvPeriod);
+            this.ClientSize = new System.Drawing.Size(625, 395);
+            this.Controls.Add(this.dgPerdata);
             this.Controls.Add(this.labelX4);
             this.Controls.Add(this.labelX3);
             this.Controls.Add(this.btnExit);
@@ -269,6 +302,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.iptSemester)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgPerdata)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -282,13 +316,15 @@
         private DevComponents.DotNetBar.LabelX labelX2;
         private DevComponents.Editors.IntegerInput iptSemester;
         private DevComponents.DotNetBar.Controls.DataGridViewX dgData;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colValue;
-        private DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn colType;
         private DevComponents.DotNetBar.ButtonX btnExport;
         private DevComponents.DotNetBar.ButtonX btnExit;
         private DevComponents.DotNetBar.LabelX labelX3;
         private DevComponents.DotNetBar.LabelX labelX4;
-        private DevComponents.DotNetBar.Controls.ListViewEx lvPeriod;
+        private DevComponents.DotNetBar.Controls.DataGridViewX dgPerdata;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colPerName;
+        private DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn colPerType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colValue;
+        private DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn colType;
     }
 }

@@ -61,6 +61,16 @@ namespace LHDB_SH_Core.Properties {
         }
         
         /// <summary>
+        ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        /// </summary>
+        internal static System.Drawing.Bitmap Report {
+            get {
+                object obj = ResourceManager.GetObject("Report", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   查詢類型 System.Byte[] 的當地語系化資源。
         /// </summary>
         internal static byte[] 學生資料名冊樣板_國教署主管學校_ {
