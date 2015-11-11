@@ -114,6 +114,7 @@
     <Compile Include="DAO\ConfigData.cs" />
     <Compile Include="DAO\ConfigDataItem.cs" />
     <Compile Include="DAO\StudAttendanceRec.cs" />
+    <Compile Include="DAO\StudentBaseRec.cs" />
     <Compile Include="DAO\udt_ConfigData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -127,6 +128,12 @@
     </Compile>
     <Compile Include="Report\AttendanceReport.Designer.cs">
       <DependentUpon>AttendanceReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Report\StudentDataNReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Report\StudentDataNReport.Designer.cs">
+      <DependentUpon>StudentDataNReport.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility.cs" />
   </ItemGroup>
@@ -186,6 +193,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Report\AttendanceReport.resx">
       <DependentUpon>AttendanceReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\StudentDataNReport.resx">
+      <DependentUpon>StudentDataNReport.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

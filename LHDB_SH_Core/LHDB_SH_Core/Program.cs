@@ -45,6 +45,24 @@ namespace LHDB_SH_Core
                 }
             };
 
+            catalog01.Add(new RibbonFeature("LHDB_SH_Core.Report.StudentDataNReport", "學生資料名冊(國教署主管學校)"));
+
+            RibbonBarItem item02 = K12.Presentation.NLDPanels.Student.RibbonBarItems["學習歷程資料"];
+            item02["報表"].Image = Properties.Resources.Report;
+            item02["報表"].Size = RibbonBarButton.MenuButtonSize.Large;
+            item02["報表"]["學生資料名冊(國教署主管學校)"].Enable = UserAcl.Current["LHDB_SH_Core.Report.StudentDataNReport"].Executable;
+            item02["報表"]["學生資料名冊(國教署主管學校)"].Click += delegate
+            {
+                if (K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0)
+                {
+                    Report.StudentDataNReport ar = new Report.StudentDataNReport(K12.Presentation.NLDPanels.Student.SelectedSource);
+                    ar.ShowDialog();
+                }
+                else
+                {
+                    FISCA.Presentation.Controls.MsgBox.Show("請選擇學生!");
+                }
+            };
             
         }
 

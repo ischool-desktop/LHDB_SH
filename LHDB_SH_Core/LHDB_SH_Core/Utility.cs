@@ -7,6 +7,9 @@ using System.IO;
 using Aspose.Cells;
 using FISCA.Presentation.Controls;
 using FISCA.UDT;
+using SHSchool.Data;
+using FISCA.Data;
+using System.Data;
 
 namespace LHDB_SH_Core
 {
@@ -103,6 +106,43 @@ namespace LHDB_SH_Core
             else
                 return cell.Value.ToString();
 
+        }
+
+        /// <summary>
+        /// 取得科別代碼,key:學生類別，value:code
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string,string> GetDepartmetDict ()
+        {
+            Dictionary<string, string> value = new Dictionary<string, string>();
+            List<SHDepartmentRecord> RecList = SHDepartment.SelectAll();
+            foreach(SHDepartmentRecord rec in RecList)
+            {
+                if (!value.ContainsKey(rec.FullName))
+                    value.Add(rec.FullName, rec.Code);
+            }
+            return value;
+        }
+
+        /// <summary>
+        /// 取得大學繁星班級代碼
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string,string> GetClassCodeDict()
+        {
+            Dictionary<string, string> value = new Dictionary<string, string>();
+            QueryHelper qh = new QueryHelper();
+            string query = "select class_name,class_code from $sh.college.sat.class_code";
+            DataTable dt = qh.Select(query);
+            foreach(DataRow dr in dt.Rows)
+            {
+                string cName = dr["class_name"].ToString();
+                string cCode = dr["class_code"].ToString();
+                if(!value.ContainsKey(cName))
+                    value.Add(cName,cCode);
+            }
+
+            return value;
         }
     }
 }
