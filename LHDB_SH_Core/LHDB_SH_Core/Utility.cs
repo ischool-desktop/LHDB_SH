@@ -10,6 +10,7 @@ using FISCA.UDT;
 using SHSchool.Data;
 using FISCA.Data;
 using System.Data;
+using LHDB_SH_Core.DAO;
 
 namespace LHDB_SH_Core
 {
@@ -183,6 +184,48 @@ namespace LHDB_SH_Core
                 }
             }
 
+            return value;
+        }
+
+        /// <summary>
+        /// 取得所有試別
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string,string> GetExamNameDict()
+        {
+            Dictionary<string, string> value = new Dictionary<string, string>();
+            QueryHelper qh = new QueryHelper();
+            string query = "select id,exam_name from exam order by exam_name";
+            DataTable dt = qh.Select(query);
+            foreach(DataRow dr in dt.Rows)
+            {
+                string name = dr["exam_name"].ToString();
+                string id = dr["id"].ToString();
+                if (!value.ContainsKey(name))
+                    value.Add(name, id);
+            }
+            return value;
+        }
+
+       public static Dictionary<string,List<StudentSCETakeRec>> GetStudentSCETakeDict(List<string> StudentIDList,string ExamID)
+        {
+            Dictionary<string, List<StudentSCETakeRec>> value = new Dictionary<string, List<StudentSCETakeRec>>();
+           if(StudentIDList.Count>0 && ExamID !="")
+           {
+               QueryHelper qh = new QueryHelper();
+               string query = "select sc_attend.ref_student_id as sid,course.course_name,course.subject,sce_take.score as sce_score,course.credit as credit from sc_attend inner join course on sc_attend.ref_course_id=course.id inner join sce_take on sc_attend.id=sce_take.ref_sc_attend_id where sc_attend.ref_student_id in("+string.Join(",",StudentIDList.ToArray())+") and sce_take.ref_exam_id in("+ExamID+")";
+               DataTable dt = qh.Select(query);
+               foreach(DataRow dr in dt.Rows)
+               {
+                   string sid = dr["sid"].ToString();
+                   if (!value.ContainsKey(sid))
+                       value.Add(sid, new List<StudentSCETakeRec>());
+
+                   StudentSCETakeRec scetRec = new StudentSCETakeRec();
+                   scetRec.StudentID = sid;
+
+               }
+           }
             return value;
         }
     }
