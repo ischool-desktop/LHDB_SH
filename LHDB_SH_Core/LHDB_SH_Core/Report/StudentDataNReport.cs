@@ -53,6 +53,7 @@ namespace LHDB_SH_Core.Report
 
         void _bgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+            _bgWorker.ReportProgress(1);
             // 取得部別、班別對照
             ConfigData cd = new ConfigData();
             Dictionary<string, List<ConfigDataItem>> cdDict = cd.GetConfigDataItemDict();
@@ -63,6 +64,9 @@ namespace LHDB_SH_Core.Report
             Dictionary<string, string> ClassIDNameDict = new Dictionary<string, string>();
             Dictionary<string, List<string>> StudTagNameDict = new Dictionary<string, List<string>>();
             List<SHStudentTagRecord> SHStudentTagRecordList = SHStudentTag.SelectByStudentIDs(_StudentIDList);
+            
+            // 取得學生科別名稱
+            Dictionary<string, string> StudeDeptNameDict = Utility.GetStudDeptNameDict(_StudentIDList);
 
             // 取得學生類別
             foreach(SHStudentTagRecord TRec in SHStudentTagRecordList)
@@ -73,7 +77,7 @@ namespace LHDB_SH_Core.Report
                 StudTagNameDict[TRec.RefStudentID].Add(TRec.FullName);
             }
 
-
+            _bgWorker.ReportProgress(20);
 
             foreach (SHClassRecord rec in SHClass.SelectAll())
                 ClassIDNameDict.Add(rec.ID, rec.Name);
@@ -103,7 +107,9 @@ namespace LHDB_SH_Core.Report
 
             // 班級代碼對照
             ClassNoMappingDict = Utility.GetClassCodeDict();
-        
+
+            _bgWorker.ReportProgress(40);
+
             // 取得學生本資料
             List<SHStudentRecord> StudentRecordList = SHStudent.SelectByIDs(_StudentIDList);
             List<StudentBaseRec> StudentBaseRecList = new List<StudentBaseRec>();
@@ -116,11 +122,18 @@ namespace LHDB_SH_Core.Report
                 sbr.IDNumber = studRec.IDNumber;
                 sbr.BirthDate = Utility.ConvertChDateString(studRec.Birthday);
                 sbr.SchoolCode = _SchoolCode;
-                
-                if (StudTagNameDict.ContainsKey(studRec.ID))
+
+                // 科/班/學程別代碼
+                sbr.DCLCode = "";
+                if(StudeDeptNameDict.ContainsKey(studRec.ID))
                 {
-                    // 科/班/學程別代碼
-                    sbr.DCLCode = "";
+                    string name = StudeDeptNameDict[studRec.ID];
+                    if(DeptMappingDict.ContainsKey(name))
+                        sbr.DCLCode=DeptMappingDict[name];
+                }
+
+                if (StudTagNameDict.ContainsKey(studRec.ID))
+                {                    
                     // 部別
                     sbr.DepCode = "";
                     // 班別
@@ -131,9 +144,6 @@ namespace LHDB_SH_Core.Report
                     {
                         if (DepMappingDict.ContainsKey(str))
                             sbr.DepCode = DepMappingDict[str];
-
-                        if (DeptMappingDict.ContainsKey(str))
-                            sbr.DCLCode = DeptMappingDict[str];
 
                         if (ClsMappingDict.ContainsKey(str))
                             sbr.ClCode = ClsMappingDict[str];
@@ -153,6 +163,7 @@ namespace LHDB_SH_Core.Report
 
                 StudentBaseRecList.Add(sbr);
             }
+            _bgWorker.ReportProgress(80);
 
             // 排序 班級座號代碼
             StudentBaseRecList = (from data in StudentBaseRecList orderby data.ClassSeatCode ascending select data).ToList();
@@ -180,7 +191,8 @@ namespace LHDB_SH_Core.Report
                 wst2.Cells[rowIdx, 5].PutValue(sbr.ClCode);
                 wst2.Cells[rowIdx, 6].PutValue(sbr.ClassSeatCode);
                 rowIdx++;    
-            }            
+            }
+            _bgWorker.ReportProgress(100);
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -208,8 +220,17 @@ namespace LHDB_SH_Core.Report
 
         private void lkDepSetup_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            lkDepSetup.Enabled = false;
             Config.DepConfigForm dcf = new Config.DepConfigForm();
             dcf.ShowDialog();
+            lkDepSetup.Enabled = true;
+        }
+
+        private void StudentDataNReport_Load(object sender, EventArgs e)
+        {
+            iptSchoolYear.Value = int.Parse(K12.Data.School.DefaultSchoolYear);
+            iptSemester.Value = int.Parse(K12.Data.School.DefaultSemester);
+            this.MaximumSize = this.MinimumSize = this.Size;
         }
     }
 }

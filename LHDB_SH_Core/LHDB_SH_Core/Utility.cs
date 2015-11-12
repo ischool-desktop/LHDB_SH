@@ -144,5 +144,46 @@ namespace LHDB_SH_Core
 
             return value;
         }
+
+        /// <summary>
+        /// 取得學生科別名稱
+        /// </summary>
+        /// <param name="StudentIDList"></param>
+        /// <returns></returns>
+        public static Dictionary<string,string> GetStudDeptNameDict(List<string> StudentIDList)
+        {
+            Dictionary<string, string> value = new Dictionary<string, string>();
+            if(StudentIDList.Count>0)
+            {
+                QueryHelper qhC1 = new QueryHelper();
+                // 取的學生所屬班級科別
+                string strC1 = "select student.id as sid,dept.name as deptName from student inner join class on student.ref_class_id=class.id inner join dept on class.ref_dept_id=dept.id where student.id in(" + string.Join(",", StudentIDList.ToArray()) + ")";
+                DataTable dtC1 = qhC1.Select(strC1);
+                foreach(DataRow dr in dtC1.Rows)
+                {
+                    string sid = dr["sid"].ToString();
+                    string deptName=dr["deptName"].ToString();
+                    if (!value.ContainsKey(sid))
+                        value.Add(sid, deptName);
+                    else
+                        value[sid] = deptName;
+                }
+
+                QueryHelper qhS1 = new QueryHelper();
+                string strS1 = "select student.id as sid,dept.name as deptName from student inner join dept on student.ref_dept_id=dept.id where student.id in(" + string.Join(",", StudentIDList.ToArray()) + ")";
+                DataTable dtS1 = qhS1.Select(strS1);
+                foreach(DataRow dr in dtS1.Rows)
+                {
+                    string sid = dr["sid"].ToString();
+                    string deptName = dr["deptName"].ToString();
+                    if (!value.ContainsKey(sid))
+                        value.Add(sid, deptName);
+                    else
+                        value[sid] = deptName;
+                }
+            }
+
+            return value;
+        }
     }
 }

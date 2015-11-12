@@ -107,8 +107,7 @@ namespace LHDB_SH_Core.Config
                 {
                     int rowIdx = dgDepData.Rows.Add();
                     dgDepData.Rows[rowIdx].Cells[colDepName.Index].Value = key;
-                    dgDepData.Rows[rowIdx].Cells[colDepValue.Index].Value = "";
-                    dgDepData.Rows[rowIdx].Cells[colDepTagName.Index].Value = dDict[key];
+                    dgDepData.Rows[rowIdx].Cells[colDepValue.Index].Value = dDict[key];                    
                 }
             }
             
@@ -130,8 +129,7 @@ namespace LHDB_SH_Core.Config
                 {
                     int rowIdx = dgClsData.Rows.Add();
                     dgClsData.Rows[rowIdx].Cells[colClsName.Index].Value = key;
-                    dgClsData.Rows[rowIdx].Cells[colClsValue.Index].Value = "";
-                    dgClsData.Rows[rowIdx].Cells[colClsTagName.Index].Value = dDict[key];
+                    dgClsData.Rows[rowIdx].Cells[colClsValue.Index].Value = dDict[key];                    
                 }
             }
 

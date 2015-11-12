@@ -34,12 +34,12 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.btnSave = new DevComponents.DotNetBar.ButtonX();
             this.btnExit = new DevComponents.DotNetBar.ButtonX();
-            this.colDepName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDepValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDepTagName = new DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn();
             this.dgClsData = new DevComponents.DotNetBar.Controls.DataGridViewX();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
+            this.colDepName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDepValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDepTagName = new DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn();
             this.colClsName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colClsValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colClsTagName = new DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn();
@@ -69,7 +69,7 @@
             this.dgDepData.Location = new System.Drawing.Point(20, 47);
             this.dgDepData.Name = "dgDepData";
             this.dgDepData.RowTemplate.Height = 24;
-            this.dgDepData.Size = new System.Drawing.Size(388, 192);
+            this.dgDepData.Size = new System.Drawing.Size(633, 169);
             this.dgDepData.TabIndex = 0;
             // 
             // btnSave
@@ -78,7 +78,7 @@
             this.btnSave.AutoSize = true;
             this.btnSave.BackColor = System.Drawing.Color.Transparent;
             this.btnSave.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnSave.Location = new System.Drawing.Point(644, 262);
+            this.btnSave.Location = new System.Drawing.Point(491, 419);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 25);
             this.btnSave.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -92,39 +92,13 @@
             this.btnExit.AutoSize = true;
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExit.Location = new System.Drawing.Point(728, 262);
+            this.btnExit.Location = new System.Drawing.Point(575, 419);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 25);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.btnExit.TabIndex = 2;
             this.btnExit.Text = "離開";
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
-            // 
-            // colDepName
-            // 
-            this.colDepName.HeaderText = "部別名稱";
-            this.colDepName.Name = "colDepName";
-            this.colDepName.ReadOnly = true;
-            // 
-            // colDepValue
-            // 
-            this.colDepValue.HeaderText = "值";
-            this.colDepValue.Name = "colDepValue";
-            this.colDepValue.ReadOnly = true;
-            this.colDepValue.Width = 60;
-            // 
-            // colDepTagName
-            // 
-            this.colDepTagName.DisplayMember = "Text";
-            this.colDepTagName.DropDownHeight = 106;
-            this.colDepTagName.DropDownWidth = 121;
-            this.colDepTagName.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.colDepTagName.HeaderText = "學生類別";
-            this.colDepTagName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.colDepTagName.ItemHeight = 17;
-            this.colDepTagName.Name = "colDepTagName";
-            this.colDepTagName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.colDepTagName.RightToLeft = System.Windows.Forms.RightToLeft.No;
             // 
             // dgClsData
             // 
@@ -145,10 +119,10 @@
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgClsData.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgClsData.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
-            this.dgClsData.Location = new System.Drawing.Point(416, 48);
+            this.dgClsData.Location = new System.Drawing.Point(20, 249);
             this.dgClsData.Name = "dgClsData";
             this.dgClsData.RowTemplate.Height = 24;
-            this.dgClsData.Size = new System.Drawing.Size(388, 192);
+            this.dgClsData.Size = new System.Drawing.Size(633, 155);
             this.dgClsData.TabIndex = 3;
             // 
             // labelX1
@@ -175,17 +149,47 @@
             // 
             this.labelX2.BackgroundStyle.Class = "";
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(416, 19);
+            this.labelX2.Location = new System.Drawing.Point(20, 222);
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(60, 21);
             this.labelX2.TabIndex = 5;
             this.labelX2.Text = "班別設定";
+            // 
+            // colDepName
+            // 
+            this.colDepName.HeaderText = "部別名稱";
+            this.colDepName.Name = "colDepName";
+            this.colDepName.ReadOnly = true;
+            this.colDepName.Width = 200;
+            // 
+            // colDepValue
+            // 
+            this.colDepValue.HeaderText = "值";
+            this.colDepValue.Name = "colDepValue";
+            this.colDepValue.ReadOnly = true;
+            this.colDepValue.Width = 60;
+            // 
+            // colDepTagName
+            // 
+            this.colDepTagName.DisplayMember = "Text";
+            this.colDepTagName.DropDownHeight = 106;
+            this.colDepTagName.DropDownWidth = 121;
+            this.colDepTagName.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.colDepTagName.HeaderText = "學生類別";
+            this.colDepTagName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.colDepTagName.IntegralHeight = false;
+            this.colDepTagName.ItemHeight = 17;
+            this.colDepTagName.Name = "colDepTagName";
+            this.colDepTagName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.colDepTagName.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.colDepTagName.Width = 200;
             // 
             // colClsName
             // 
             this.colClsName.HeaderText = "班別名稱";
             this.colClsName.Name = "colClsName";
             this.colClsName.ReadOnly = true;
+            this.colClsName.Width = 200;
             // 
             // colClsValue
             // 
@@ -202,16 +206,18 @@
             this.colClsTagName.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.colClsTagName.HeaderText = "學生類別";
             this.colClsTagName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.colClsTagName.IntegralHeight = false;
             this.colClsTagName.ItemHeight = 17;
             this.colClsTagName.Name = "colClsTagName";
             this.colClsTagName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.colClsTagName.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.colClsTagName.Width = 200;
             // 
             // DepConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(820, 295);
+            this.ClientSize = new System.Drawing.Size(674, 455);
             this.Controls.Add(this.labelX2);
             this.Controls.Add(this.labelX1);
             this.Controls.Add(this.dgClsData);
@@ -235,14 +241,14 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private DevComponents.DotNetBar.ButtonX btnSave;
         private DevComponents.DotNetBar.ButtonX btnExit;
+        private DevComponents.DotNetBar.Controls.DataGridViewX dgClsData;
+        private DevComponents.DotNetBar.LabelX labelX1;
+        private DevComponents.DotNetBar.LabelX labelX2;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDepName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDepValue;
         private DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn colDepTagName;
-        private DevComponents.DotNetBar.Controls.DataGridViewX dgClsData;
         private System.Windows.Forms.DataGridViewTextBoxColumn colClsName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colClsValue;
         private DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn colClsTagName;
-        private DevComponents.DotNetBar.LabelX labelX1;
-        private DevComponents.DotNetBar.LabelX labelX2;
     }
 }
