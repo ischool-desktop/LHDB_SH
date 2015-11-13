@@ -83,6 +83,24 @@ namespace LHDB_SH_Core
                 }
             };
 
+            catalog01.Add(new RibbonFeature("LHDB_SH_Core.Report.SubjectReport", "科目名冊"));
+
+            RibbonBarItem item04 = K12.Presentation.NLDPanels.Student.RibbonBarItems["學習歷程資料"];
+            item04["報表"].Image = Properties.Resources.Report;
+            item04["報表"].Size = RibbonBarButton.MenuButtonSize.Large;
+            item04["報表"]["科目名冊"].Enable = UserAcl.Current["LHDB_SH_Core.Report.SubjectReport"].Executable;
+            item04["報表"]["科目名冊"].Click += delegate
+            {
+                if (K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0)
+                {
+                    Report.SubjectReport ar = new Report.SubjectReport(K12.Presentation.NLDPanels.Student.SelectedSource);
+                    ar.ShowDialog();
+                }
+                else
+                {
+                    FISCA.Presentation.Controls.MsgBox.Show("請選擇學生!");
+                }
+            };
 
         }
 

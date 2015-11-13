@@ -136,6 +136,7 @@
     <Compile Include="DAO\StudAttendanceRec.cs" />
     <Compile Include="DAO\StudentBaseRec.cs" />
     <Compile Include="DAO\StudentSCETakeRec.cs" />
+    <Compile Include="DAO\SubjectRec.cs" />
     <Compile Include="DAO\udt_ConfigData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -167,6 +168,12 @@
     </Compile>
     <Compile Include="Report\StudentDataNReport.Designer.cs">
       <DependentUpon>StudentDataNReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Report\SubjectReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Report\SubjectReport.Designer.cs">
+      <DependentUpon>SubjectReport.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility.cs" />
   </ItemGroup>
@@ -223,6 +230,7 @@
     <None Include="Template\學生資料名冊樣板%28國教署主管學校%29.xls" />
     <None Include="Template\學生資料名冊樣板%28非國教署主管學校%29.xls" />
     <None Include="Template\定期考查成績名冊樣板.xls" />
+    <None Include="Template\科目名冊樣板.xls" />
     <None Include="Template\缺勤紀錄名冊樣板.xls" />
   </ItemGroup>
   <ItemGroup>
@@ -244,6 +252,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Report\StudentDataNReport.resx">
       <DependentUpon>StudentDataNReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\SubjectReport.resx">
+      <DependentUpon>SubjectReport.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
