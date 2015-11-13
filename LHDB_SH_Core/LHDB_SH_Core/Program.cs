@@ -63,7 +63,27 @@ namespace LHDB_SH_Core
                     FISCA.Presentation.Controls.MsgBox.Show("請選擇學生!");
                 }
             };
-            
+
+            catalog01.Add(new RibbonFeature("LHDB_SH_Core.Report.StudentSCETakeScoreReport", "定期考查成績名冊"));
+
+            RibbonBarItem item03 = K12.Presentation.NLDPanels.Student.RibbonBarItems["學習歷程資料"];
+            item03["報表"].Image = Properties.Resources.Report;
+            item03["報表"].Size = RibbonBarButton.MenuButtonSize.Large;
+            item03["報表"]["定期考查成績名冊"].Enable = UserAcl.Current["LHDB_SH_Core.Report.StudentSCETakeScoreReport"].Executable;
+            item03["報表"]["定期考查成績名冊"].Click += delegate
+            {
+                if (K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0)
+                {
+                    Report.StudentSCETakeScoreReport ar = new Report.StudentSCETakeScoreReport(K12.Presentation.NLDPanels.Student.SelectedSource);
+                    ar.ShowDialog();
+                }
+                else
+                {
+                    FISCA.Presentation.Controls.MsgBox.Show("請選擇學生!");
+                }
+            };
+
+
         }
 
         static void _bgLLoadUDT_DoWork(object sender, DoWorkEventArgs e)

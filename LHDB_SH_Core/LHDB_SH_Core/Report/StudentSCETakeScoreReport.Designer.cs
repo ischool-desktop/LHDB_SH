@@ -50,7 +50,7 @@
             this.btnExit.AutoSize = true;
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExit.Location = new System.Drawing.Point(353, 115);
+            this.btnExit.Location = new System.Drawing.Point(305, 115);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 25);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -65,7 +65,7 @@
             this.btnExport.AutoSize = true;
             this.btnExport.BackColor = System.Drawing.Color.Transparent;
             this.btnExport.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExport.Location = new System.Drawing.Point(263, 115);
+            this.btnExport.Location = new System.Drawing.Point(215, 115);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(75, 25);
             this.btnExport.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -199,11 +199,11 @@
             this.iptExamNo.TabIndex = 19;
             this.iptExamNo.Value = 1;
             // 
-            // StudentCourseScoreReport
+            // StudentSCETakeScoreReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(453, 152);
+            this.ClientSize = new System.Drawing.Size(398, 152);
             this.Controls.Add(this.labelX4);
             this.Controls.Add(this.iptExamNo);
             this.Controls.Add(this.cboExam);
@@ -215,7 +215,7 @@
             this.Controls.Add(this.labelX1);
             this.Controls.Add(this.iptSchoolYear);
             this.DoubleBuffered = true;
-            this.Name = "StudentCourseScoreReport";
+            this.Name = "StudentSCETakeScoreReport";
             this.Text = "定期考查成績名冊";
             this.Load += new System.EventHandler(this.StudentCourseScoreReport_Load);
             ((System.ComponentModel.ISupportInitialize)(this.iptSemester)).EndInit();
