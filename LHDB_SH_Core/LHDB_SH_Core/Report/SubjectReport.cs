@@ -70,6 +70,17 @@ namespace LHDB_SH_Core.Report
         void _bgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             _bgWorker.ReportProgress(1);
+
+            Dictionary<string, string> DeptMappingDict = new Dictionary<string, string>();
+            // 取得科群對照
+            Dictionary<string, string> GroupIDDict = Utility.GetGroupDeptIDDict();
+
+            // 科別對照
+            DeptMappingDict = Utility.GetDepartmetDict();
+
+            // 取得學生科別名稱
+            Dictionary<string, string> StudeDeptNameDict = Utility.GetStudDeptNameDict(_StudentIDList);
+
             Dictionary<string, SubjectRec> SubjectRecDict = new Dictionary<string, SubjectRec>();
             SmartSchool.Customization.Data.AccessHelper accHelper = new SmartSchool.Customization.Data.AccessHelper ();
             // 取得學生學期科目成績
@@ -85,12 +96,25 @@ namespace LHDB_SH_Core.Report
                         if (!SubjectRecDict.ContainsKey(key))
                         {
                             SubjectRec sr = new SubjectRec();
+
+                            // 科/班/學程別代碼
+                            string DCLCode = "";
+                            string GroupID = "";
+                            if (StudeDeptNameDict.ContainsKey(studRec.StudentID))
+                            {
+                                string name = StudeDeptNameDict[studRec.StudentID];
+                                if (DeptMappingDict.ContainsKey(name))
+                                    DCLCode = DeptMappingDict[name];
+
+                                if (GroupIDDict.ContainsKey(DCLCode))
+                                    GroupID = GroupIDDict[DCLCode];
+                            }
                             sr.Code = sssi.Detail.GetAttribute("科目");
                             sr.Name = sssi.Detail.GetAttribute("科目");
                             sr.CourseType = sssi.Detail.GetAttribute("修課校部訂") + sssi.Detail.GetAttribute("開課分項類別") + sssi.Detail.GetAttribute("修課必選修");
-                            sr.DLCCode = "";
+                            sr.DLCCode = DCLCode;
                             sr.DomainType = "";
-                            sr.Group = "";
+                            sr.Group = GroupID;
                             sr.isCalc = sssi.Detail.GetAttribute("不計學分");
                             sr.Required = sssi.Detail.GetAttribute("修課必選修");
                             sr.SpcType = "";
