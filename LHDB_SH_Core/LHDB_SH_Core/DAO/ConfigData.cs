@@ -94,5 +94,49 @@ namespace LHDB_SH_Core.DAO
                 value = elm.Attribute(name).Value;
             return value;
         }
+
+        private Dictionary<string, string> KeyValueItemDict = new Dictionary<string, string>();
+
+        public void ClearKeyValueItem()
+        {
+            KeyValueItemDict.Clear();
+        }
+
+        public void AddKeyValueItem(string key,string Value)
+        {
+            if (!KeyValueItemDict.ContainsKey(key))
+                KeyValueItemDict.Add(key, Value);
+        }
+
+        public void SaveKeyValueItem(string ConfigName)
+        {
+            List<ConfigDataItem> its = new List<ConfigDataItem>();
+            foreach(string key in KeyValueItemDict.Keys)
+            {
+                ConfigDataItem cdi = new ConfigDataItem();
+                cdi.Name = key;
+                cdi.Value = KeyValueItemDict[key];
+                its.Add(cdi);
+            }
+            SetConfigDataItem(its, ConfigName);
+        }
+
+        public Dictionary<string,string> GetKeyValueItem(string ConfigName)
+        {
+            Dictionary<string, string> value = new Dictionary<string, string>();
+
+            Dictionary<string, List<ConfigDataItem>> datas = GetConfigDataItemDict();
+            if(datas.ContainsKey(ConfigName))
+            {
+                foreach(ConfigDataItem cdi in  datas[ConfigName])
+                {
+                    if (!value.ContainsKey(cdi.Name))
+                        value.Add(cdi.Name, cdi.Value);
+                }
+            }
+
+            return value;
+        }
+
     }
 }

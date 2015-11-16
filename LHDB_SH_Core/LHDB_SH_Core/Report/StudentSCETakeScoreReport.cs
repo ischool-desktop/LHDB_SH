@@ -18,6 +18,8 @@ namespace LHDB_SH_Core.Report
     {
         private int _SchoolYear = 0, _Semester = 0, _ExamNo=0;
         private string _SchoolCode = "";
+        private string _ConfigName = "定期考查名冊_畫面設定";
+        private ConfigData _cd;
         
         // 名冊別
         private string _DocType = "5";
@@ -32,6 +34,7 @@ namespace LHDB_SH_Core.Report
 
         public StudentSCETakeScoreReport(List<string> StudentIDList)
         {
+            _cd = new ConfigData();
             _ExamNameDict = new Dictionary<string, string>();
             _bgWorker = new BackgroundWorker();
             _bgWorker.DoWork += _bgWorker_DoWork;
@@ -222,6 +225,13 @@ namespace LHDB_SH_Core.Report
                 _ExamNo = iptExamNo.Value;
                 _SchoolCode = K12.Data.School.Code;
 
+                _cd.ClearKeyValueItem();
+                _cd.AddKeyValueItem("學年度", _SchoolYear.ToString());
+                _cd.AddKeyValueItem("學期", _Semester.ToString());
+                _cd.AddKeyValueItem("段考別", _ExamNo.ToString());
+                _cd.AddKeyValueItem("試別", cboExam.Text);
+                _cd.SaveKeyValueItem(_ConfigName);
+
                 if (_ExamID != "")
                 {
                     btnExport.Enabled = false;
@@ -245,6 +255,22 @@ namespace LHDB_SH_Core.Report
             _ExamNameDict = Utility.GetExamNameDict();
             foreach (string name in _ExamNameDict.Keys)
                 cboExam.Items.Add(name);
+
+            // 讀取預設值
+            Dictionary<string, string> ds = _cd.GetKeyValueItem(_ConfigName);
+            if (ds.ContainsKey("學年度"))
+                if (ds["學年度"] != "")
+                    iptSchoolYear.Value = int.Parse(ds["學年度"]);
+            if (ds.ContainsKey("學期"))
+                if (ds["學期"] != "")
+                    iptSemester.Value = int.Parse(ds["學期"]);
+
+            if (ds.ContainsKey("段考別"))
+                if (ds["段考別"] != "")
+                    iptExamNo.Value = int.Parse(ds["段考別"]);
+                        
+            if (ds.ContainsKey("試別"))
+                cboExam.Text = ds["試別"];
         }
 
     }

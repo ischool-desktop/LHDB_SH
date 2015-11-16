@@ -210,16 +210,10 @@ namespace LHDB_SH_Core.Report
                 _SchoolYear = iptSchoolYear.Value;
                 _Semester = iptSemester.Value;
 
-                List<ConfigDataItem> ConfigDataItemList = new List<ConfigDataItem>();
-                ConfigDataItem cdi1 = new ConfigDataItem();
-                cdi1.Name = "學年度";
-                cdi1.Value = _SchoolYear.ToString();
-                ConfigDataItemList.Add(cdi1);
-                ConfigDataItem cdi2 = new ConfigDataItem();
-                cdi2.Name = "學期";
-                cdi2.Value = _Semester.ToString();
-                ConfigDataItemList.Add(cdi2);
-
+                _cd.ClearKeyValueItem();
+                _cd.AddKeyValueItem("學年度",_SchoolYear.ToString());
+                _cd.AddKeyValueItem("學期", _Semester.ToString());
+                
                 List<string> ttList = new List<string>();
                 List<string> ttNList = new List<string>();
                 foreach (ListViewItem lvi in lvScType.CheckedItems)
@@ -232,12 +226,8 @@ namespace LHDB_SH_Core.Report
 
                 _SchoolType = string.Join(",", ttList.ToArray());
 
-                ConfigDataItem cdi3 = new ConfigDataItem();
-                cdi3.Name = "學校種類";
-                cdi3.Value = string.Join(",",ttNList.ToArray());
-                ConfigDataItemList.Add(cdi3);
-
-                _cd.SetConfigDataItem(ConfigDataItemList,_ConfigName);
+                _cd.AddKeyValueItem("學校種類", string.Join(",", ttNList.ToArray()));
+                _cd.SaveKeyValueItem(_ConfigName);
 
                 _bgWorker.RunWorkerAsync();
 
@@ -259,27 +249,23 @@ namespace LHDB_SH_Core.Report
             foreach (string key in _SchoolTypeDict.Keys)
                 lvScType.Items.Add(key);
 
-            if(_cd.GetConfigDataItemDict().ContainsKey(_ConfigName))
-            {
-                List<ConfigDataItem> items = _cd.GetConfigDataItemDict()[_ConfigName];
-                foreach(ConfigDataItem item in items)
-                {
-                    if (item.Name == "學年度")
-                        if (item.Value != "")
-                            iptSchoolYear.Value = int.Parse(item.Value);
 
-                    if (item.Name == "學期")
-                        if (item.Value != "")
-                            iptSemester.Value = int.Parse(item.Value);
-                    if(item.Name=="學校種類")
-                    {
-                        List<string> its = item.Value.Split(',').ToList();
-                        foreach(ListViewItem lvi in lvScType.Items)
-                        {
-                            if (its.Contains(lvi.Text))
-                                lvi.Checked = true;
-                        }
-                    }
+            // 讀取預設值
+            Dictionary<string, string> ds = _cd.GetKeyValueItem(_ConfigName);
+            if (ds.ContainsKey("學年度"))
+                if (ds["學年度"] != "")
+                    iptSchoolYear.Value = int.Parse(ds["學年度"]);
+            if (ds.ContainsKey("學期"))
+                if (ds["學期"] != "")
+                    iptSemester.Value = int.Parse(ds["學期"]);
+
+            if (ds.ContainsKey("學校種類"))
+            {
+                List<string> its = ds["學校種類"].Split(',').ToList();
+                foreach (ListViewItem lvi in lvScType.Items)
+                {
+                    if (its.Contains(lvi.Text))
+                        lvi.Checked = true;
                 }
             }
         }

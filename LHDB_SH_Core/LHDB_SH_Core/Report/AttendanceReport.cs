@@ -20,6 +20,7 @@ namespace LHDB_SH_Core.Report
         ConfigData _cd;
         string _ConfigName1 = "缺勤紀錄名冊_假別設定";
         string _ConfigName2 = "缺勤紀錄名冊_節次設定";
+        string _ConfigName3 = "缺勤紀錄名冊_畫面設定";
         BackgroundWorker _bgWorker;
 
         List<string> _StudentIDList;
@@ -175,6 +176,12 @@ namespace LHDB_SH_Core.Report
             // 儲存節次設定
             SavePeriodDg();
             
+            // 儲存學年度學期
+            _cd.ClearKeyValueItem();
+            _cd.AddKeyValueItem("學年度",_SchoolYear.ToString());
+            _cd.AddKeyValueItem("學期", _Semester.ToString());
+            _cd.SaveKeyValueItem(_ConfigName3);
+            
             _bgWorker.RunWorkerAsync();
         }
 
@@ -318,6 +325,13 @@ namespace LHDB_SH_Core.Report
                 }
             }
 
+            Dictionary<string, string> ds = _cd.GetKeyValueItem(_ConfigName3);
+             if (ds.ContainsKey("學年度"))
+                    if (ds["學年度"]!="")
+                        iptSchoolYear.Value = int.Parse(ds["學年度"]);
+              if (ds.ContainsKey("學期"))
+                  if (ds["學期"] != "")
+                      iptSemester.Value = int.Parse(ds["學期"]);
             #endregion
 
 

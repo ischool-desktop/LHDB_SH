@@ -18,6 +18,8 @@ namespace LHDB_SH_Core.Report
     {
         private int _SchoolYear = 0, _Semester = 0;
         private string _SchoolCode = "";
+        private string _ConfigName = "學生名冊_畫面設定";
+        private ConfigData _cd;
         // 名冊別
         private string _DocType = "1";
 
@@ -27,6 +29,7 @@ namespace LHDB_SH_Core.Report
         
         public StudentDataNReport(List<string> StudentIDList)
         {
+            _cd = new ConfigData();
             _bgWorker = new BackgroundWorker();
             _StudentIDList = StudentIDList;
             _bgWorker.DoWork += _bgWorker_DoWork;
@@ -209,6 +212,11 @@ namespace LHDB_SH_Core.Report
                 _Semester = iptSemester.Value;
                 _SchoolCode = K12.Data.School.Code;
 
+                _cd.ClearKeyValueItem();
+                _cd.AddKeyValueItem("學年度",_SchoolYear.ToString());
+                _cd.AddKeyValueItem("學期",_Semester.ToString());
+                _cd.SaveKeyValueItem(_ConfigName);                
+
                 _bgWorker.RunWorkerAsync();
 
             }catch(Exception ex)
@@ -231,6 +239,16 @@ namespace LHDB_SH_Core.Report
             iptSchoolYear.Value = int.Parse(K12.Data.School.DefaultSchoolYear);
             iptSemester.Value = int.Parse(K12.Data.School.DefaultSemester);
             this.MaximumSize = this.MinimumSize = this.Size;
+
+                  // 讀取預設值
+              Dictionary<string, string> ds = _cd.GetKeyValueItem(_ConfigName);
+             if (ds.ContainsKey("學年度"))
+                    if (ds["學年度"]!="")
+                        iptSchoolYear.Value = int.Parse(ds["學年度"]);
+              if (ds.ContainsKey("學期"))
+                  if (ds["學期"] != "")
+                      iptSemester.Value = int.Parse(ds["學期"]);
+      
         }
     }
 }
