@@ -156,9 +156,14 @@ namespace LHDB_SH_Core.Report
                 else
                     rec.isCalc = "3";
 
-                if(ClassTypeDict.ContainsKey(rec.CourseType))
+                if(!string.IsNullOrEmpty(rec.CourseType))
                 {
-                    rec.CourseType = ClassTypeDict[rec.CourseType];
+                    if (ClassTypeDict.ContainsKey(rec.CourseType))
+                    {
+                        rec.CourseType = ClassTypeDict[rec.CourseType];
+                    }
+                    else
+                        rec.CourseType = "13";
                 }
 
                 SubjectRecList.Add(rec);
