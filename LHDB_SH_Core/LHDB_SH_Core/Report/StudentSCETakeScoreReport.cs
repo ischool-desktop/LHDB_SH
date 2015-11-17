@@ -96,6 +96,8 @@ namespace LHDB_SH_Core.Report
             foreach (SHClassRecord rec in SHClass.SelectAll())
                 ClassIDNameDict.Add(rec.ID, rec.Name);
 
+            // 班級代碼對照
+            ClassNoMappingDict = Utility.GetClassCodeDict();
 
             // 班別對照
             if (cdDict.ContainsKey("班別代碼"))

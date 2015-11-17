@@ -68,7 +68,7 @@ namespace LHDB_SH_Core.DAO
         /// <summary>
         /// 補修科目開設年級及學期
         /// </summary>
-        public string ScSubjectYearSemester { get; set; }
+        public string ScSubjectGradeYearSemester { get; set; }
         
         /// <summary>
         /// 補修成績
@@ -83,12 +83,31 @@ namespace LHDB_SH_Core.DAO
         /// <summary>
         /// 重修科目開設年級及學期
         /// </summary>
-        public string ReSubjectYearSemester { get; set; }
+        public string ReSubjectSchoolYearSemester { get; set; }
         
         /// <summary>
         /// 重修成績
         /// </summary>
         public string ReScore { get; set; }
 
+        /// <summary>
+        /// 是否補修成績
+        /// </summary>
+        public bool isScScore { get; set; }
+
+        /// <summary>
+        /// 重修學年度
+        /// </summary>
+        public int ReScoreSchoolYear { get; set; }
+
+        /// <summary>
+        /// 重修學期
+        /// </summary>
+        public int ReScoreSemester { get; set; }
+
+        /// <summary>
+        /// 是否重修學年度學期成績
+        /// </summary>
+        public bool isReScore { get; set; }
     }
 }

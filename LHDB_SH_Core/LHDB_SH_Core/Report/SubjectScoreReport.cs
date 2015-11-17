@@ -68,8 +68,37 @@ namespace LHDB_SH_Core.Report
 
             List<SubjectScoreRec> SubjectScoreRecList = new List<SubjectScoreRec>();
             Dictionary<string, string> DeptMappingDict = new Dictionary<string, string>();
+            Dictionary<string, List<string>> StudTagNameDict = new Dictionary<string, List<string>>();
+            
             // 科別對照
             DeptMappingDict = Utility.GetDepartmetDict();
+
+            Dictionary<string, List<ConfigDataItem>> cdDict = _cd.GetConfigDataItemDict();
+            Dictionary<string, string> ClsMappingDict = new Dictionary<string, string>();
+            Dictionary<string, string> ClassNoMappingDict = new Dictionary<string, string>();
+            List<SHStudentTagRecord> SHStudentTagRecordList = SHStudentTag.SelectByStudentIDs(_StudentIDList);
+            // 班別對照
+            if (cdDict.ContainsKey("班別代碼"))
+            {
+                foreach (ConfigDataItem cdi in cdDict["班別代碼"])
+                {
+                    if (!ClsMappingDict.ContainsKey(cdi.TargetName))
+                        ClsMappingDict.Add(cdi.TargetName, cdi.Value);
+                }
+            }
+
+
+            // 取得學生類別
+            foreach (SHStudentTagRecord TRec in SHStudentTagRecordList)
+            {
+                if (!StudTagNameDict.ContainsKey(TRec.RefStudentID))
+                    StudTagNameDict.Add(TRec.RefStudentID, new List<string>());
+
+                StudTagNameDict[TRec.RefStudentID].Add(TRec.FullName);
+            }
+
+            // 班級代碼對照
+            ClassNoMappingDict = Utility.GetClassCodeDict();
 
             // 取得學生科別名稱
             Dictionary<string, string> StudeDeptNameDict = Utility.GetStudDeptNameDict(_StudentIDList);
@@ -85,6 +114,35 @@ namespace LHDB_SH_Core.Report
                 DateTime dt;
                 if(DateTime.TryParse(studRec.Birthday,out dt))
                     BirthDate = Utility.ConvertChDateString(dt);
+
+
+                // 科/班/學程別代碼
+                string DCLCode = "";
+                if (StudeDeptNameDict.ContainsKey(studRec.StudentID))
+                {
+                    string name = StudeDeptNameDict[studRec.StudentID];
+                    if (DeptMappingDict.ContainsKey(name))
+                        DCLCode = DeptMappingDict[name];
+                }
+
+
+                // 修課班別
+                string ClClassName = "";
+                if (StudTagNameDict.ContainsKey(studRec.StudentID))
+                {
+                    foreach (string str in StudTagNameDict[studRec.StudentID])
+                    {
+                        if (ClsMappingDict.ContainsKey(str))
+                            ClClassName = ClsMappingDict[str];
+                    }
+                }
+
+                // 修課班級
+                string ClassCode = "";
+            if (ClassNoMappingDict.ContainsKey(studRec.RefClass.ClassName))
+                ClassCode = ClassNoMappingDict[studRec.RefClass.ClassName];
+
+
                 
                 foreach (SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo sssi in studRec.SemesterSubjectScoreList)
                 {
@@ -95,18 +153,37 @@ namespace LHDB_SH_Core.Report
                         ssr.StudentID = studRec.StudentID;
                         ssr.BirthDate = BirthDate;
                         ssr.SubjectCode = sssi.Subject;
+                        ssr.ReSubjectCode = sssi.Subject;
+                        ssr.ScSubjectCode = sssi.Subject;
+
                         ssr.SubjectCredit = sssi.Detail.GetAttribute("開課學分數");
                         ssr.Score = sssi.Detail.GetAttribute("原始成績");
+                        ssr.ReScore = sssi.Detail.GetAttribute("重修成績");
+                        ssr.MuScore = sssi.Detail.GetAttribute("補考成績");
+                        ssr.ScScore = sssi.Detail.GetAttribute("原始成績");
+                        ssr.isScScore = false;
+                        ssr.isReScore = false;
 
-                        // 科/班/學程別代碼
-                        string DCLCode = "";                        
-                        if (StudeDeptNameDict.ContainsKey(studRec.StudentID))
+                        if (sssi.Detail.GetAttribute("是否補修成績") == "是")
                         {
-                            string name = StudeDeptNameDict[studRec.StudentID];
-                            if (DeptMappingDict.ContainsKey(name))
-                                DCLCode = DeptMappingDict[name];
+                            ssr.isScScore = true;
+                            ssr.ScSubjectGradeYearSemester = sssi.GradeYear.ToString() + sssi.Semester.ToString();
                         }
+                        if(sssi.Detail.GetAttribute("重修學年度")!="" && sssi.Detail.GetAttribute("重修學期")!="")
+                        {
+                            int sy, ss;
+                            if (int.TryParse(sssi.Detail.GetAttribute("重修學年度"), out sy))
+                                ssr.ReScoreSchoolYear = sy;
 
+                            if (int.TryParse(sssi.Detail.GetAttribute("重修學期"), out ss))
+                                ssr.ReScoreSemester = ss;
+
+                            ssr.ReSubjectSchoolYearSemester =string.Format("{0:000}",ssr.ReScoreSchoolYear) + ssr.ReScoreSemester;
+                            ssr.isReScore = true;
+                        }
+                        ssr.DCLCode = DCLCode;
+                        ssr.ClassName = ClassCode;
+                        ssr.ClCode = ClClassName;
 
                         SubjectScoreRecList.Add(ssr);
                     }
@@ -133,6 +210,10 @@ namespace LHDB_SH_Core.Report
             int rowIdx = 1;
             foreach(SubjectScoreRec ssr in SubjectScoreRecList)
             {
+                // 跳過補修
+                if (ssr.isScScore || ssr.isReScore)
+                    continue;
+
                 wst2.Cells[rowIdx, 0].PutValue(ssr.IDNumber);
                 wst2.Cells[rowIdx, 1].PutValue(ssr.BirthDate);
                 wst2.Cells[rowIdx, 2].PutValue(ssr.SubjectCode);
@@ -141,16 +222,50 @@ namespace LHDB_SH_Core.Report
                 wst2.Cells[rowIdx, 5].PutValue(ssr.ClassName);
                 wst2.Cells[rowIdx, 6].PutValue(ssr.ClCode);
                 wst2.Cells[rowIdx, 7].PutValue(ssr.Score);
-                wst2.Cells[rowIdx, 8].PutValue(ssr.ScScore);
+                wst2.Cells[rowIdx, 8].PutValue(ssr.MuScore);
                 rowIdx++;
-            }
-            
+            }            
 
             // wst3:身分證號 0,出生日期 1,補修科目代碼 2,補修科目開設年級及學期(選填) 3,科目學分 4,修課科/班/學程別代碼 5,修課班級 6,修課班別 7,補修成績 8,補考成績 9
-
+            rowIdx = 1;
+            foreach(SubjectScoreRec ssr in SubjectScoreRecList)
+            {
+                // 補修成績
+                if(ssr.isScScore)
+                {
+                    wst3.Cells[rowIdx, 0].PutValue(ssr.IDNumber);
+                    wst3.Cells[rowIdx, 1].PutValue(ssr.BirthDate);
+                    wst3.Cells[rowIdx, 2].PutValue(ssr.ScSubjectCode);
+                    wst3.Cells[rowIdx, 3].PutValue(ssr.ScSubjectGradeYearSemester);
+                    wst3.Cells[rowIdx, 4].PutValue(ssr.SubjectCredit);
+                    wst3.Cells[rowIdx, 5].PutValue(ssr.DCLCode);
+                    wst3.Cells[rowIdx, 6].PutValue(ssr.ClassName);
+                    wst3.Cells[rowIdx, 7].PutValue(ssr.ClCode);
+                    wst3.Cells[rowIdx, 8].PutValue(ssr.ScScore);
+                    wst3.Cells[rowIdx, 9].PutValue(ssr.MuScore);
+                    rowIdx++;
+                }
+            }
 
             // wst4:身分證號 0,出生日期 1,重修科目代碼 2,重修科目開設年級及學期 3,科目學分 4,修課科/班/學程別代碼 5,修課班級 6,修課班別 7,重修成績 8
-
+            rowIdx = 1;
+            foreach (SubjectScoreRec ssr in SubjectScoreRecList)
+            {
+                // 有重修成績學年度學期
+                if(ssr.isReScore)
+                {
+                    wst4.Cells[rowIdx, 0].PutValue(ssr.IDNumber);
+                    wst4.Cells[rowIdx, 1].PutValue(ssr.BirthDate);
+                    wst4.Cells[rowIdx, 2].PutValue(ssr.ReSubjectCode);
+                    wst4.Cells[rowIdx, 3].PutValue(ssr.ReSubjectSchoolYearSemester);
+                    wst4.Cells[rowIdx, 4].PutValue(ssr.SubjectCredit);
+                    wst4.Cells[rowIdx, 5].PutValue(ssr.DCLCode);
+                    wst4.Cells[rowIdx, 6].PutValue(ssr.ClassName);
+                    wst4.Cells[rowIdx, 7].PutValue(ssr.ClCode);
+                    wst4.Cells[rowIdx, 8].PutValue(ssr.ReScore);                    
+                    rowIdx++;
+                }
+            }
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -160,8 +275,8 @@ namespace LHDB_SH_Core.Report
 
         private void SubjectScoreReport_Load(object sender, EventArgs e)
         {
-            _SchoolYear = int.Parse(K12.Data.School.DefaultSchoolYear);
-            _Semester = int.Parse(K12.Data.School.DefaultSemester);
+            iptSchoolYear.Value = int.Parse(K12.Data.School.DefaultSchoolYear);
+            iptSemester.Value = int.Parse(K12.Data.School.DefaultSemester);
 
             Dictionary<string, string> ds = _cd.GetKeyValueItem(_ConfigName);
             if (ds.ContainsKey("學年度"))
