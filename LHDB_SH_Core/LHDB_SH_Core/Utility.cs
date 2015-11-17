@@ -260,6 +260,8 @@ namespace LHDB_SH_Core
                    string GrStr="";
                    if (StudGradYearDict.ContainsKey(sid))
                        GrStr = StudGradYearDict[sid]+"_及";
+                   
+                   scetRec.Score = "-1";
 
                    decimal dd, passScore = 0;
                    if (decimal.TryParse(dr["sce_score"].ToString(),out dd))
@@ -277,8 +279,7 @@ namespace LHDB_SH_Core
 
                        scetRec.Status = "1";
                    }else
-                   {
-                       scetRec.Score = "00.00";
+                   {                       
                        // 缺考
                        scetRec.Status = "4";
                    }

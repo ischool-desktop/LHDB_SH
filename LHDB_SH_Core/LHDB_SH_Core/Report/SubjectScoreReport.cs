@@ -100,6 +100,8 @@ namespace LHDB_SH_Core.Report
             // 班級代碼對照
             ClassNoMappingDict = Utility.GetClassCodeDict();
 
+            _bgWorker.ReportProgress(10);
+
             // 取得學生科別名稱
             Dictionary<string, string> StudeDeptNameDict = Utility.GetStudDeptNameDict(_StudentIDList);
 
@@ -107,6 +109,35 @@ namespace LHDB_SH_Core.Report
                  // 取得學生學期科目成績
             List<SmartSchool.Customization.Data.StudentRecord> StudentRecList = accHelper.StudentHelper.GetStudents(_StudentIDList);
             accHelper.StudentHelper.FillSemesterSubjectScore(true, StudentRecList);
+
+            // 取得及格標準
+            Dictionary<string, Dictionary<string, decimal>> passScoreDict = Utility.GetStudentApplyLimitDict(StudentRecList);
+            Dictionary<string, string> StudGradYearDict = new Dictionary<string, string>();
+
+            foreach (SmartSchool.Customization.Data.StudentRecord rec in StudentRecList)
+            {
+                if (!StudGradYearDict.ContainsKey(rec.StudentID))
+                    StudGradYearDict.Add(rec.StudentID, rec.RefClass.GradeYear);
+            }
+
+            // 取得學期對照年為主
+            List<SHSemesterHistoryRecord> SemsH = SHSemesterHistory.SelectByStudentIDs(_StudentIDList);
+            foreach (SHSemesterHistoryRecord rec in SemsH)
+            {
+                foreach (K12.Data.SemesterHistoryItem item in rec.SemesterHistoryItems)
+                {
+                    if (item.SchoolYear == _SchoolYear && item.Semester == _Semester)
+                    {
+                        if (!StudGradYearDict.ContainsKey(item.RefStudentID))
+                            StudGradYearDict.Add(item.RefStudentID, item.GradeYear.ToString());
+                        else
+                            StudGradYearDict[item.RefStudentID] = item.GradeYear.ToString();
+                    }
+                }
+            }
+
+            _bgWorker.ReportProgress(30);
+            
             foreach(SmartSchool.Customization.Data.StudentRecord studRec in StudentRecList)
             {
                 string IDNumber = studRec.IDNumber.ToUpper();
@@ -141,8 +172,6 @@ namespace LHDB_SH_Core.Report
                 string ClassCode = "";
             if (ClassNoMappingDict.ContainsKey(studRec.RefClass.ClassName))
                 ClassCode = ClassNoMappingDict[studRec.RefClass.ClassName];
-
-
                 
                 foreach (SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo sssi in studRec.SemesterSubjectScoreList)
                 {
@@ -157,12 +186,55 @@ namespace LHDB_SH_Core.Report
                         ssr.ScSubjectCode = sssi.Subject;
 
                         ssr.SubjectCredit = sssi.Detail.GetAttribute("開課學分數");
-                        ssr.Score = sssi.Detail.GetAttribute("原始成績");
-                        ssr.ReScore = sssi.Detail.GetAttribute("重修成績");
-                        ssr.MuScore = sssi.Detail.GetAttribute("補考成績");
-                        ssr.ScScore = sssi.Detail.GetAttribute("原始成績");
-                        ssr.isScScore = false;
-                        ssr.isReScore = false;
+                        // 預設值 -1
+                        ssr.Score = ssr.ScScore = ssr.ReScore = ssr.MuScore = "-1";
+
+
+                        string GrStr = "";
+                        if (StudGradYearDict.ContainsKey(studRec.StudentID))
+                            GrStr = StudGradYearDict[studRec.StudentID] + "_及";
+
+                        decimal ds,dsre,dsmu,dssc, passScore = 60;
+
+                        // 及格標準
+                        if (passScoreDict[studRec.StudentID].ContainsKey(GrStr))
+                            passScore = passScoreDict[studRec.StudentID][GrStr];
+
+                        if(decimal.TryParse(sssi.Detail.GetAttribute("原始成績"),out ds))
+                        {
+                            if(ds<passScore)
+                                ssr.Score = "*" + string.Format("{0:###.00}", ds);
+                            else
+                                ssr.Score = string.Format("{0:###.00}", ds);
+                        }
+
+                        if (decimal.TryParse(sssi.Detail.GetAttribute("重修成績"), out dsre))
+                        {
+                            if (dsre < passScore)
+                                ssr.ReScore = "*" + string.Format("{0:###.00}", dsre);
+                            else
+                                ssr.ReScore = string.Format("{0:###.00}", dsre);
+                        }
+
+                        if (decimal.TryParse(sssi.Detail.GetAttribute("補考成績"), out dsmu))
+                        {
+                            if (dsmu < passScore)
+                                ssr.MuScore = "*" + string.Format("{0:###.00}", dsmu);
+                            else
+                                ssr.MuScore = string.Format("{0:###.00}", dsmu);
+                        }
+
+                        if (decimal.TryParse(sssi.Detail.GetAttribute("原始成績"), out dssc))
+                        {
+                            if (dssc < passScore)
+                                ssr.ScScore = "*" + string.Format("{0:###.00}", dssc);
+                            else
+                                ssr.ScScore = string.Format("{0:###.00}", dssc);
+                        }
+                        
+
+                        ssr.isScScore=ssr.isReScore = false;
+                         
 
                         if (sssi.Detail.GetAttribute("是否補修成績") == "是")
                         {
@@ -190,9 +262,8 @@ namespace LHDB_SH_Core.Report
                 }
             }
 
-
-
-
+            _bgWorker.ReportProgress(80);
+            
             // 讀取樣版並寫入 Excel
             _wb = new Workbook(new MemoryStream(Properties.Resources.成績名冊樣版));
             Worksheet wst1 = _wb.Worksheets["成績名冊封面"];
@@ -266,6 +337,9 @@ namespace LHDB_SH_Core.Report
                     rowIdx++;
                 }
             }
+
+            _bgWorker.ReportProgress(100);
+
         }
 
         private void btnExit_Click(object sender, EventArgs e)
