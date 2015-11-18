@@ -102,7 +102,7 @@ namespace LHDB_SH_Core.Report
             }
 
             // 班級代碼對照
-            ClassNoMappingDict = Utility.GetClassCodeDict();
+            ClassNoMappingDict = Utility.GetLHClassCodeDict();
 
             _bgWorker.ReportProgress(10);
 

@@ -125,6 +125,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\ClassCodeConfigForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Config\ClassCodeConfigForm.Designer.cs">
+      <DependentUpon>ClassCodeConfigForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Config\DepConfigForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -231,6 +237,7 @@
     <Content Include="Library\SmartSchool.Evaluation.HS.dll" />
     <Content Include="Library\SmartSchool.Evaluation.HS.pdb" />
     <Content Include="Report.png" />
+    <Content Include="設定.png" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -242,6 +249,9 @@
     <None Include="Template\缺勤紀錄名冊樣板.xls" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Config\ClassCodeConfigForm.resx">
+      <DependentUpon>ClassCodeConfigForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Config\DepConfigForm.resx">
       <DependentUpon>DepConfigForm.cs</DependentUpon>
     </EmbeddedResource>

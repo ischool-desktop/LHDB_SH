@@ -97,7 +97,7 @@ namespace LHDB_SH_Core.Report
                 ClassIDNameDict.Add(rec.ID, rec.Name);
 
             // 班級代碼對照
-            ClassNoMappingDict = Utility.GetClassCodeDict();
+            ClassNoMappingDict = Utility.GetLHClassCodeDict();
 
             // 班別對照
             if (cdDict.ContainsKey("班別代碼"))

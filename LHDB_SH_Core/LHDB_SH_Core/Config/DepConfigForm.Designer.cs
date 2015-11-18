@@ -31,18 +31,18 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgDepData = new DevComponents.DotNetBar.Controls.DataGridViewX();
+            this.colDepName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDepValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDepTagName = new DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.btnSave = new DevComponents.DotNetBar.ButtonX();
             this.btnExit = new DevComponents.DotNetBar.ButtonX();
             this.dgClsData = new DevComponents.DotNetBar.Controls.DataGridViewX();
-            this.labelX1 = new DevComponents.DotNetBar.LabelX();
-            this.labelX2 = new DevComponents.DotNetBar.LabelX();
-            this.colDepName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDepValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDepTagName = new DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn();
             this.colClsName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colClsValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colClsTagName = new DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn();
+            this.labelX1 = new DevComponents.DotNetBar.LabelX();
+            this.labelX2 = new DevComponents.DotNetBar.LabelX();
             ((System.ComponentModel.ISupportInitialize)(this.dgDepData)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgClsData)).BeginInit();
             this.SuspendLayout();
@@ -71,6 +71,35 @@
             this.dgDepData.RowTemplate.Height = 24;
             this.dgDepData.Size = new System.Drawing.Size(633, 169);
             this.dgDepData.TabIndex = 0;
+            // 
+            // colDepName
+            // 
+            this.colDepName.HeaderText = "部別名稱";
+            this.colDepName.Name = "colDepName";
+            this.colDepName.ReadOnly = true;
+            this.colDepName.Width = 200;
+            // 
+            // colDepValue
+            // 
+            this.colDepValue.HeaderText = "值";
+            this.colDepValue.Name = "colDepValue";
+            this.colDepValue.ReadOnly = true;
+            this.colDepValue.Width = 60;
+            // 
+            // colDepTagName
+            // 
+            this.colDepTagName.DisplayMember = "Text";
+            this.colDepTagName.DropDownHeight = 106;
+            this.colDepTagName.DropDownWidth = 121;
+            this.colDepTagName.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.colDepTagName.HeaderText = "學生類別";
+            this.colDepTagName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.colDepTagName.IntegralHeight = false;
+            this.colDepTagName.ItemHeight = 17;
+            this.colDepTagName.Name = "colDepTagName";
+            this.colDepTagName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.colDepTagName.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.colDepTagName.Width = 200;
             // 
             // btnSave
             // 
@@ -125,65 +154,6 @@
             this.dgClsData.Size = new System.Drawing.Size(633, 155);
             this.dgClsData.TabIndex = 3;
             // 
-            // labelX1
-            // 
-            this.labelX1.AutoSize = true;
-            this.labelX1.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX1.BackgroundStyle.Class = "";
-            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX1.Location = new System.Drawing.Point(20, 19);
-            this.labelX1.Name = "labelX1";
-            this.labelX1.Size = new System.Drawing.Size(60, 21);
-            this.labelX1.TabIndex = 4;
-            this.labelX1.Text = "部別設定";
-            // 
-            // labelX2
-            // 
-            this.labelX2.AutoSize = true;
-            this.labelX2.BackColor = System.Drawing.Color.Transparent;
-            // 
-            // 
-            // 
-            this.labelX2.BackgroundStyle.Class = "";
-            this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(20, 222);
-            this.labelX2.Name = "labelX2";
-            this.labelX2.Size = new System.Drawing.Size(60, 21);
-            this.labelX2.TabIndex = 5;
-            this.labelX2.Text = "班別設定";
-            // 
-            // colDepName
-            // 
-            this.colDepName.HeaderText = "部別名稱";
-            this.colDepName.Name = "colDepName";
-            this.colDepName.ReadOnly = true;
-            this.colDepName.Width = 200;
-            // 
-            // colDepValue
-            // 
-            this.colDepValue.HeaderText = "值";
-            this.colDepValue.Name = "colDepValue";
-            this.colDepValue.ReadOnly = true;
-            this.colDepValue.Width = 60;
-            // 
-            // colDepTagName
-            // 
-            this.colDepTagName.DisplayMember = "Text";
-            this.colDepTagName.DropDownHeight = 106;
-            this.colDepTagName.DropDownWidth = 121;
-            this.colDepTagName.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.colDepTagName.HeaderText = "學生類別";
-            this.colDepTagName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.colDepTagName.IntegralHeight = false;
-            this.colDepTagName.ItemHeight = 17;
-            this.colDepTagName.Name = "colDepTagName";
-            this.colDepTagName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.colDepTagName.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.colDepTagName.Width = 200;
-            // 
             // colClsName
             // 
             this.colClsName.HeaderText = "班別名稱";
@@ -212,6 +182,36 @@
             this.colClsTagName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.colClsTagName.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.colClsTagName.Width = 200;
+            // 
+            // labelX1
+            // 
+            this.labelX1.AutoSize = true;
+            this.labelX1.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX1.BackgroundStyle.Class = "";
+            this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX1.Location = new System.Drawing.Point(20, 19);
+            this.labelX1.Name = "labelX1";
+            this.labelX1.Size = new System.Drawing.Size(154, 21);
+            this.labelX1.TabIndex = 4;
+            this.labelX1.Text = "設定部別代碼與學生類別";
+            // 
+            // labelX2
+            // 
+            this.labelX2.AutoSize = true;
+            this.labelX2.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX2.BackgroundStyle.Class = "";
+            this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX2.Location = new System.Drawing.Point(20, 222);
+            this.labelX2.Name = "labelX2";
+            this.labelX2.Size = new System.Drawing.Size(154, 21);
+            this.labelX2.TabIndex = 5;
+            this.labelX2.Text = "設定班別代碼與學生類別";
             // 
             // DepConfigForm
             // 

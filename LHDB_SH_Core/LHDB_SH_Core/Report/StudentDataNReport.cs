@@ -112,7 +112,7 @@ namespace LHDB_SH_Core.Report
             DeptMappingDict = Utility.GetDepartmetDict();
 
             // 班級代碼對照
-            ClassNoMappingDict = Utility.GetClassCodeDict();
+            ClassNoMappingDict = Utility.GetLHClassCodeDict();
 
             _bgWorker.ReportProgress(40);
 
@@ -235,14 +235,7 @@ namespace LHDB_SH_Core.Report
             
         }
 
-        private void lkDepSetup_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            lkDepSetup.Enabled = false;
-            Config.DepConfigForm dcf = new Config.DepConfigForm();
-            dcf.ShowDialog();
-            lkDepSetup.Enabled = true;
-        }
-
+     
         private void StudentDataNReport_Load(object sender, EventArgs e)
         {
             iptSchoolYear.Value = int.Parse(K12.Data.School.DefaultSchoolYear);

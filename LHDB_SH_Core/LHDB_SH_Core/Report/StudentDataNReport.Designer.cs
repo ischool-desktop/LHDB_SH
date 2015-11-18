@@ -32,7 +32,6 @@
             this.iptSemester = new DevComponents.Editors.IntegerInput();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
             this.iptSchoolYear = new DevComponents.Editors.IntegerInput();
-            this.lkDepSetup = new System.Windows.Forms.LinkLabel();
             this.btnExit = new DevComponents.DotNetBar.ButtonX();
             this.btnExport = new DevComponents.DotNetBar.ButtonX();
             ((System.ComponentModel.ISupportInitialize)(this.iptSemester)).BeginInit();
@@ -105,18 +104,6 @@
             this.iptSchoolYear.TabIndex = 4;
             this.iptSchoolYear.Value = 1;
             // 
-            // lkDepSetup
-            // 
-            this.lkDepSetup.AutoSize = true;
-            this.lkDepSetup.BackColor = System.Drawing.Color.Transparent;
-            this.lkDepSetup.Location = new System.Drawing.Point(13, 75);
-            this.lkDepSetup.Name = "lkDepSetup";
-            this.lkDepSetup.Size = new System.Drawing.Size(99, 17);
-            this.lkDepSetup.TabIndex = 8;
-            this.lkDepSetup.TabStop = true;
-            this.lkDepSetup.Text = "部別與班別設定";
-            this.lkDepSetup.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lkDepSetup_LinkClicked);
-            // 
             // btnExit
             // 
             this.btnExit.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
@@ -124,7 +111,7 @@
             this.btnExit.AutoSize = true;
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExit.Location = new System.Drawing.Point(276, 71);
+            this.btnExit.Location = new System.Drawing.Point(175, 71);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 25);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -139,7 +126,7 @@
             this.btnExport.AutoSize = true;
             this.btnExport.BackColor = System.Drawing.Color.Transparent;
             this.btnExport.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExport.Location = new System.Drawing.Point(186, 71);
+            this.btnExport.Location = new System.Drawing.Point(85, 71);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(75, 25);
             this.btnExport.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -151,10 +138,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(377, 113);
+            this.ClientSize = new System.Drawing.Size(276, 113);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnExport);
-            this.Controls.Add(this.lkDepSetup);
             this.Controls.Add(this.labelX2);
             this.Controls.Add(this.iptSemester);
             this.Controls.Add(this.labelX1);
@@ -176,7 +162,6 @@
         private DevComponents.Editors.IntegerInput iptSemester;
         private DevComponents.DotNetBar.LabelX labelX1;
         private DevComponents.Editors.IntegerInput iptSchoolYear;
-        private System.Windows.Forms.LinkLabel lkDepSetup;
         private DevComponents.DotNetBar.ButtonX btnExit;
         private DevComponents.DotNetBar.ButtonX btnExport;
     }

@@ -849,7 +849,7 @@ namespace LHDB_SH_Core
         public static Dictionary<string,string> GetStudentClassCodeSeatNo(List<string> StudentIDList,int SchoolYear,int Semester,bool ReturnSeatNo)
         {
             Dictionary<string, string> value = new Dictionary<string, string>();
-            Dictionary<string, string> ClassCodeDict = new Dictionary<string, string>();
+            Dictionary<string, string> ClassCodeDict = new Dictionary<string, string>();            
             Dictionary<string, string> codeDict = new Dictionary<string, string>();
             Dictionary<string, string> SeatNoDict = new Dictionary<string, string>();
 
@@ -871,10 +871,10 @@ namespace LHDB_SH_Core
                 }
             }
 
-            // 取得大學繁星班級代碼
+            // 取得學習歷程班級代碼
             try
             {
-                codeDict = GetClassCodeDict();
+                codeDict = GetLHClassCodeDict();
             }
             catch (Exception ex) {  }
             
@@ -899,6 +899,26 @@ namespace LHDB_SH_Core
                 }
             }
 
+            return value;
+        }
+
+        /// <summary>
+        /// 取得學習歷程班級代碼
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string,string> GetLHClassCodeDict()
+        {
+            Dictionary<string, string> value = new Dictionary<string, string>();
+            ConfigData cd = new ConfigData();
+            Dictionary<string, List<ConfigDataItem>> datas = cd.GetConfigDataItemDict();
+            if(datas.ContainsKey("班級代碼"))
+            {
+                foreach(ConfigDataItem cdi in datas["班級代碼"])
+                {
+                    if (!value.ContainsKey(cdi.Name))
+                        value.Add(cdi.Name, cdi.Value);
+                }
+            }
             return value;
         }
     }
