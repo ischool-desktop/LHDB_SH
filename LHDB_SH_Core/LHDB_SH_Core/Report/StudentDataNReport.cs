@@ -67,7 +67,10 @@ namespace LHDB_SH_Core.Report
             Dictionary<string, string> ClassIDNameDict = new Dictionary<string, string>();
             Dictionary<string, List<string>> StudTagNameDict = new Dictionary<string, List<string>>();
             List<SHStudentTagRecord> SHStudentTagRecordList = SHStudentTag.SelectByStudentIDs(_StudentIDList);
-            
+
+            // 取得學期對照班級座號轉成大學繁星班代
+            Dictionary<string, string> StudentSHClassSeatNoDict = Utility.GetStudentClassCodeSeatNo(_StudentIDList, _SchoolYear, _Semester, true);
+
             // 取得學生科別名稱
             Dictionary<string, string> StudeDeptNameDict = Utility.GetStudDeptNameDict(_StudentIDList);
 
@@ -156,13 +159,19 @@ namespace LHDB_SH_Core.Report
                 
                 // 班級座號代碼
                 sbr.ClassSeatCode = "";
-                if(ClassIDNameDict.ContainsKey(studRec.RefClassID))
+                if(StudentSHClassSeatNoDict.ContainsKey(studRec.ID))
                 {
-                    string cName = ClassIDNameDict[studRec.RefClassID];
-                    if(ClassNoMappingDict.ContainsKey(cName) && studRec.SeatNo.HasValue)
-                        sbr.ClassSeatCode = ClassNoMappingDict[cName] + string.Format("{0:00}", studRec.SeatNo.Value);
+                    sbr.ClassSeatCode = StudentSHClassSeatNoDict[studRec.ID];
                 }
-
+                else
+                {
+                    if (ClassIDNameDict.ContainsKey(studRec.RefClassID))
+                    {
+                        string cName = ClassIDNameDict[studRec.RefClassID];
+                        if (ClassNoMappingDict.ContainsKey(cName) && studRec.SeatNo.HasValue)
+                            sbr.ClassSeatCode = ClassNoMappingDict[cName] + string.Format("{0:00}", studRec.SeatNo.Value);
+                    }
+                }
 
                 StudentBaseRecList.Add(sbr);
             }

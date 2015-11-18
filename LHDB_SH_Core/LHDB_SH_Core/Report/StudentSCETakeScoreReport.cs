@@ -116,6 +116,8 @@ namespace LHDB_SH_Core.Report
             List<SHStudentRecord> StudentRecList = SHStudent.SelectByIDs(_StudentIDList);
             _bgWorker.ReportProgress(40);
 
+            // 取得學期對照轉成大學繁星代碼
+            Dictionary<string, string> StudentSHClassCodDict = Utility.GetStudentClassCodeSeatNo(_StudentIDList, _SchoolYear, _Semester, false);
 
             // 取得學生定期成績資料
             Dictionary<string, List<StudentSCETakeRec>> StudSCETakeDict = Utility.GetStudentSCETakeDict(_StudentIDList, _ExamID,_SchoolYear,_Semester);
@@ -151,11 +153,18 @@ namespace LHDB_SH_Core.Report
 
                     // 修課班級
                     string ClassCode = "000";
-                    if (ClassIDNameDict.ContainsKey(StudRec.RefClassID))
+                    if(StudentSHClassCodDict.ContainsKey(StudRec.ID))
                     {
-                        string cName = ClassIDNameDict[StudRec.RefClassID];
-                        if (ClassNoMappingDict.ContainsKey(cName))
-                            ClassCode = ClassNoMappingDict[cName];
+                        ClassCode = StudentSHClassCodDict[StudRec.ID];
+                    }
+                    else
+                    {
+                        if (ClassIDNameDict.ContainsKey(StudRec.RefClassID))
+                        {
+                            string cName = ClassIDNameDict[StudRec.RefClassID];
+                            if (ClassNoMappingDict.ContainsKey(cName))
+                                ClassCode = ClassNoMappingDict[cName];
+                        }
                     }
 
                     foreach(StudentSCETakeRec rec in StudSCETakeDict[StudRec.ID])

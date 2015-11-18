@@ -838,5 +838,68 @@ namespace LHDB_SH_Core
            return value;
        }
 
+        /// <summary>
+        /// 取得學期對照內班級座號，轉成大學繁星代碼與相對學習歷程資料庫需要班座
+        /// </summary>
+        /// <param name="StudentIDList"></param>
+        /// <param name="SchoolYear"></param>
+        /// <param name="Semester"></param>
+        /// <param name="ReturnSeatNo"></param>
+        /// <returns></returns>
+        public static Dictionary<string,string> GetStudentClassCodeSeatNo(List<string> StudentIDList,int SchoolYear,int Semester,bool ReturnSeatNo)
+        {
+            Dictionary<string, string> value = new Dictionary<string, string>();
+            Dictionary<string, string> ClassCodeDict = new Dictionary<string, string>();
+            Dictionary<string, string> codeDict = new Dictionary<string, string>();
+            Dictionary<string, string> SeatNoDict = new Dictionary<string, string>();
+
+            // 取得學生學期對照
+            List<SHSemesterHistoryRecord> SHSemesterHistoryRecordList = SHSemesterHistory.SelectByStudentIDs(StudentIDList);
+            foreach (SHSemesterHistoryRecord rec in SHSemesterHistoryRecordList)
+            {
+                foreach(K12.Data.SemesterHistoryItem item in rec.SemesterHistoryItems)
+                {
+                    if(item.SchoolYear== SchoolYear && item.Semester==Semester)
+                    {
+                        if (!ClassCodeDict.ContainsKey(rec.RefStudentID))
+                        {
+                            ClassCodeDict.Add(rec.RefStudentID, item.ClassName);
+                            if (item.SeatNo.HasValue)
+                                SeatNoDict.Add(rec.RefStudentID, string.Format("{0:00}", item.SeatNo.Value));
+                        }
+                    }
+                }
+            }
+
+            // 取得大學繁星班級代碼
+            try
+            {
+                codeDict = GetClassCodeDict();
+            }
+            catch (Exception ex) {  }
+            
+           // 比對資料
+            foreach(string sid in ClassCodeDict.Keys)
+            {
+                string cName = ClassCodeDict[sid];
+
+                if(codeDict.ContainsKey(cName))
+                {
+                    // +回傳座號
+                    if(ReturnSeatNo)
+                    {
+                        if (SeatNoDict.ContainsKey(sid))
+                            value.Add(sid, codeDict[cName] + SeatNoDict[sid]);
+                    }
+                    else
+                    {
+                        // 只有班代
+                        value.Add(sid, codeDict[cName]);
+                    }
+                }
+            }
+
+            return value;
+        }
     }
 }

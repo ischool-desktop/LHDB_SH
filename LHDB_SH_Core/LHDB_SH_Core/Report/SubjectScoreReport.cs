@@ -77,6 +77,10 @@ namespace LHDB_SH_Core.Report
             Dictionary<string, string> ClsMappingDict = new Dictionary<string, string>();
             Dictionary<string, string> ClassNoMappingDict = new Dictionary<string, string>();
             List<SHStudentTagRecord> SHStudentTagRecordList = SHStudentTag.SelectByStudentIDs(_StudentIDList);
+
+            // 取得學期對照轉成大學繁星代碼
+            Dictionary<string, string> StudentSHClassCodDict = Utility.GetStudentClassCodeSeatNo(_StudentIDList, _SchoolYear, _Semester, false);
+
             // 班別對照
             if (cdDict.ContainsKey("班別代碼"))
             {
@@ -170,8 +174,15 @@ namespace LHDB_SH_Core.Report
 
                 // 修課班級
                 string ClassCode = "";
-            if (ClassNoMappingDict.ContainsKey(studRec.RefClass.ClassName))
-                ClassCode = ClassNoMappingDict[studRec.RefClass.ClassName];
+                if(StudentSHClassCodDict.ContainsKey(studRec.StudentID))
+                {
+                    ClassCode = StudentSHClassCodDict[studRec.StudentID];
+                }
+                else
+                {
+                    if (ClassNoMappingDict.ContainsKey(studRec.RefClass.ClassName))
+                        ClassCode = ClassNoMappingDict[studRec.RefClass.ClassName];
+                }
                 
                 foreach (SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo sssi in studRec.SemesterSubjectScoreList)
                 {

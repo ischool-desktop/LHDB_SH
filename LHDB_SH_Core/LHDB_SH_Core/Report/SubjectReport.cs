@@ -92,7 +92,8 @@ namespace LHDB_SH_Core.Report
                 {
                     if(sssi.SchoolYear==_SchoolYear && sssi.Semester== _Semester)
                     {
-                        string key = sssi.Detail.GetAttribute("不計學分") + sssi.Detail.GetAttribute("修課必選修") + sssi.Detail.GetAttribute("修課校部訂") + sssi.Detail.GetAttribute("科目") + sssi.Detail.GetAttribute("開課分項類別");
+                        // 需要加入科別，上傳測試過程科別也是key
+                        string key =studRec.Department+ sssi.Detail.GetAttribute("不計學分") + sssi.Detail.GetAttribute("修課必選修") + sssi.Detail.GetAttribute("修課校部訂") + sssi.Detail.GetAttribute("科目") + sssi.Detail.GetAttribute("開課分項類別");
                         if (!SubjectRecDict.ContainsKey(key))
                         {
                             SubjectRec sr = new SubjectRec();
