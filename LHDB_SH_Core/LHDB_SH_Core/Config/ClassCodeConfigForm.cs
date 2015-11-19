@@ -33,21 +33,10 @@ namespace LHDB_SH_Core.Config
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            btnSave.Enabled = false;
             try
             {
-                List<ConfigDataItem> datas = new List<ConfigDataItem>();
-                foreach(DataGridViewRow dgvr in dgClassCode.Rows)
-                {
-                    if (dgvr.IsNewRow)
-                        continue;
-
-                    ConfigDataItem cdi = new ConfigDataItem();
-                    cdi.Name = Utility.GetDgCellValue(dgvr.Cells[colClassName.Index]);
-                    cdi.TargetName = Utility.GetDgCellValue(dgvr.Cells[colStClassCode.Index]);
-                    cdi.Value = Utility.GetDgCellValue(dgvr.Cells[colLHClassCode.Index]);
-                    datas.Add(cdi);
-                }
-                _cd.SetConfigDataItem(datas, _ConfigClassName);
+                SaveDgData();
                 MsgBox.Show("儲存完成。");
                 this.Close();
             }
@@ -56,6 +45,23 @@ namespace LHDB_SH_Core.Config
                 MsgBox.Show("儲存設定發生錯誤," + ex.Message);
             }
 
+        }
+
+        private void SaveDgData()
+        {
+            List<ConfigDataItem> datas = new List<ConfigDataItem>();
+            foreach (DataGridViewRow dgvr in dgClassCode.Rows)
+            {
+                if (dgvr.IsNewRow)
+                    continue;
+
+                ConfigDataItem cdi = new ConfigDataItem();
+                cdi.Name = Utility.GetDgCellValue(dgvr.Cells[colClassName.Index]);
+                cdi.TargetName = Utility.GetDgCellValue(dgvr.Cells[colStClassCode.Index]);
+                cdi.Value = Utility.GetDgCellValue(dgvr.Cells[colLHClassCode.Index]);
+                datas.Add(cdi);
+            }
+            _cd.SetConfigDataItem(datas, _ConfigClassName);
         }
 
         private void ClassCodeConfigForm_Load(object sender, EventArgs e)
@@ -81,7 +87,9 @@ namespace LHDB_SH_Core.Config
             }
             else
             {
+                // 完全沒資料
                 GetDefaultToDG();
+                SaveDgData();
             }
         }
 
@@ -102,6 +110,16 @@ namespace LHDB_SH_Core.Config
             {
                 MsgBox.Show("請先設定大學繁星班級代碼，功能位置：學生>大學繁星>設定班級代碼。");              
             }
+        }
+
+        private void lnStData_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            lnStData.Enabled = false;
+            if (MsgBox.Show("將會取得目前最新繁星班級代碼，學習歷程班級代碼會預設和繁星班級代碼相同。", "班級代碼", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
+            {
+                GetDefaultToDG();
+            }
+            lnStData.Enabled = true;
         }
     }
 }

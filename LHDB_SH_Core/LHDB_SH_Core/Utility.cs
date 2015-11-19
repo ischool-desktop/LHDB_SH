@@ -913,7 +913,9 @@ namespace LHDB_SH_Core
             Dictionary<string, List<ConfigDataItem>> datas = cd.GetConfigDataItemDict();
             if(datas.ContainsKey("班級代碼"))
             {
-                foreach(ConfigDataItem cdi in datas["班級代碼"])
+                List<ConfigDataItem> items = (from data in datas["班級代碼"] orderby data.Name ascending select data).ToList();
+
+                foreach(ConfigDataItem cdi in items)
                 {
                     if (!value.ContainsKey(cdi.Name))
                         value.Add(cdi.Name, cdi.Value);

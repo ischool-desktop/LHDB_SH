@@ -88,12 +88,18 @@ namespace LHDB_SH_Core.Report
             accHelper.StudentHelper.FillSemesterSubjectScore(true, StudentRecList);
             foreach(SmartSchool.Customization.Data.StudentRecord studRec in StudentRecList)
             {
+                // 科別
+                string DeptName = "";
+                if (StudeDeptNameDict.ContainsKey(studRec.StudentID))
+                    DeptName = StudeDeptNameDict[studRec.StudentID];               
+
                 foreach(SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo sssi in studRec.SemesterSubjectScoreList)
                 {
                     if(sssi.SchoolYear==_SchoolYear && sssi.Semester== _Semester)
                     {
+                        
                         // 需要加入科別，上傳測試過程科別也是key
-                        string key =studRec.Department+ sssi.Detail.GetAttribute("不計學分") + sssi.Detail.GetAttribute("修課必選修") + sssi.Detail.GetAttribute("修課校部訂") + sssi.Detail.GetAttribute("科目") + sssi.Detail.GetAttribute("開課分項類別");
+                        string key =DeptName+ sssi.Detail.GetAttribute("不計學分") + sssi.Detail.GetAttribute("修課必選修") + sssi.Detail.GetAttribute("修課校部訂") + sssi.Detail.GetAttribute("科目") + sssi.Detail.GetAttribute("開課分項類別");
                         if (!SubjectRecDict.ContainsKey(key))
                         {
                             SubjectRec sr = new SubjectRec();

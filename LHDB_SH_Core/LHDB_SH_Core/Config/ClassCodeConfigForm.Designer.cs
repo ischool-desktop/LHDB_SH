@@ -31,11 +31,12 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
             this.dgClassCode = new DevComponents.DotNetBar.Controls.DataGridViewX();
-            this.btnExit = new DevComponents.DotNetBar.ButtonX();
-            this.btnSave = new DevComponents.DotNetBar.ButtonX();
             this.colClassName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colStClassCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colLHClassCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnExit = new DevComponents.DotNetBar.ButtonX();
+            this.btnSave = new DevComponents.DotNetBar.ButtonX();
+            this.lnStData = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.dgClassCode)).BeginInit();
             this.SuspendLayout();
             // 
@@ -82,6 +83,26 @@
             this.dgClassCode.Size = new System.Drawing.Size(466, 317);
             this.dgClassCode.TabIndex = 5;
             // 
+            // colClassName
+            // 
+            this.colClassName.HeaderText = "班級名稱";
+            this.colClassName.Name = "colClassName";
+            this.colClassName.ReadOnly = true;
+            // 
+            // colStClassCode
+            // 
+            this.colStClassCode.HeaderText = "繁星班級代碼";
+            this.colStClassCode.Name = "colStClassCode";
+            this.colStClassCode.ReadOnly = true;
+            this.colStClassCode.Width = 120;
+            // 
+            // colLHClassCode
+            // 
+            this.colLHClassCode.HeaderText = "學習歷程班級代碼";
+            this.colLHClassCode.Name = "colLHClassCode";
+            this.colLHClassCode.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.colLHClassCode.Width = 150;
+            // 
             // btnExit
             // 
             this.btnExit.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
@@ -112,31 +133,24 @@
             this.btnSave.Text = "儲存";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // colClassName
+            // lnStData
             // 
-            this.colClassName.HeaderText = "班級名稱";
-            this.colClassName.Name = "colClassName";
-            this.colClassName.ReadOnly = true;
-            // 
-            // colStClassCode
-            // 
-            this.colStClassCode.HeaderText = "繁星班級代碼";
-            this.colStClassCode.Name = "colStClassCode";
-            this.colStClassCode.ReadOnly = true;
-            this.colStClassCode.Width = 120;
-            // 
-            // colLHClassCode
-            // 
-            this.colLHClassCode.HeaderText = "學習歷程班級代碼";
-            this.colLHClassCode.Name = "colLHClassCode";
-            this.colLHClassCode.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.colLHClassCode.Width = 150;
+            this.lnStData.AutoSize = true;
+            this.lnStData.BackColor = System.Drawing.Color.Transparent;
+            this.lnStData.Location = new System.Drawing.Point(17, 380);
+            this.lnStData.Name = "lnStData";
+            this.lnStData.Size = new System.Drawing.Size(112, 17);
+            this.lnStData.TabIndex = 9;
+            this.lnStData.TabStop = true;
+            this.lnStData.Text = "取得繁星班級代碼";
+            this.lnStData.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnStData_LinkClicked);
             // 
             // ClassCodeConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(490, 414);
+            this.Controls.Add(this.lnStData);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.labelX1);
@@ -160,5 +174,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colClassName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colStClassCode;
         private System.Windows.Forms.DataGridViewTextBoxColumn colLHClassCode;
+        private System.Windows.Forms.LinkLabel lnStData;
     }
 }
