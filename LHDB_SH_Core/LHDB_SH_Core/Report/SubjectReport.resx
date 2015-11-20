@@ -117,4 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="labelX4.Text" xml:space="preserve">
+    <value>請先檢查學生&gt;項目&gt;學期對照表，當選擇學年度、學期，會讀取學期對照表內容。
+
+學校種類：(名冊封面)
+請勾選學校種類，會依種類填入名冊封面：
+普通高中填1、完全中學填2、高職填3、高中附設職業類科填4、高職附設普通科填5、進修學校(高中)填6、進修學校(高職)填7、特教學校填8。
+
+科/班/學程別：(名冊內容)
+科別代碼內容對照系統內 教務作業&gt;基本設定&gt;管理&gt;科別對照管理。
+
+特色班/實驗班名稱：(名冊內容)
+請設定"特色班實驗班名稱對照"，會依學生學期對照表內該學年度學期所屬班級對照名稱。
+
+名冊參照：104學年高級中等學校學生學習歷程資料庫 科目名冊</value>
+  </data>
 </root>

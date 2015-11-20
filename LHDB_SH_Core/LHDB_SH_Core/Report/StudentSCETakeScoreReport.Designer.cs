@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StudentSCETakeScoreReport));
             this.btnExit = new DevComponents.DotNetBar.ButtonX();
             this.btnExport = new DevComponents.DotNetBar.ButtonX();
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
@@ -38,6 +39,7 @@
             this.cboExam = new DevComponents.DotNetBar.Controls.ComboBoxEx();
             this.labelX4 = new DevComponents.DotNetBar.LabelX();
             this.iptExamNo = new DevComponents.Editors.IntegerInput();
+            this.labelX5 = new DevComponents.DotNetBar.LabelX();
             ((System.ComponentModel.ISupportInitialize)(this.iptSemester)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iptSchoolYear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iptExamNo)).BeginInit();
@@ -50,7 +52,7 @@
             this.btnExit.AutoSize = true;
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExit.Location = new System.Drawing.Point(305, 115);
+            this.btnExit.Location = new System.Drawing.Point(432, 484);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 25);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -65,7 +67,7 @@
             this.btnExport.AutoSize = true;
             this.btnExport.BackColor = System.Drawing.Color.Transparent;
             this.btnExport.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExport.Location = new System.Drawing.Point(215, 115);
+            this.btnExport.Location = new System.Drawing.Point(342, 484);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(75, 25);
             this.btnExport.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -199,11 +201,28 @@
             this.iptExamNo.TabIndex = 19;
             this.iptExamNo.Value = 1;
             // 
+            // labelX5
+            // 
+            this.labelX5.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX5.BackgroundStyle.Class = "";
+            this.labelX5.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX5.Location = new System.Drawing.Point(12, 113);
+            this.labelX5.Name = "labelX5";
+            this.labelX5.Size = new System.Drawing.Size(495, 362);
+            this.labelX5.TabIndex = 21;
+            this.labelX5.Text = resources.GetString("labelX5.Text");
+            this.labelX5.TextLineAlignment = System.Drawing.StringAlignment.Near;
+            this.labelX5.WordWrap = true;
+            // 
             // StudentSCETakeScoreReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(398, 152);
+            this.ClientSize = new System.Drawing.Size(525, 521);
+            this.Controls.Add(this.labelX5);
             this.Controls.Add(this.labelX4);
             this.Controls.Add(this.iptExamNo);
             this.Controls.Add(this.cboExam);
@@ -238,5 +257,6 @@
         private DevComponents.DotNetBar.Controls.ComboBoxEx cboExam;
         private DevComponents.DotNetBar.LabelX labelX4;
         private DevComponents.Editors.IntegerInput iptExamNo;
+        private DevComponents.DotNetBar.LabelX labelX5;
     }
 }

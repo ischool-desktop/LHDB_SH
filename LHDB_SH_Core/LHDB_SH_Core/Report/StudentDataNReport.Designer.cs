@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StudentDataNReport));
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
             this.iptSemester = new DevComponents.Editors.IntegerInput();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
@@ -39,6 +40,7 @@
             this.iptDepDefault = new DevComponents.Editors.IntegerInput();
             this.labelX3 = new DevComponents.DotNetBar.LabelX();
             this.lnkDepSetup = new System.Windows.Forms.LinkLabel();
+            this.labelX5 = new DevComponents.DotNetBar.LabelX();
             ((System.ComponentModel.ISupportInitialize)(this.iptSemester)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iptSchoolYear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iptClassDefault)).BeginInit();
@@ -54,7 +56,7 @@
             // 
             this.labelX2.BackgroundStyle.Class = "";
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(263, 12);
+            this.labelX2.Location = new System.Drawing.Point(323, 12);
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(34, 21);
             this.labelX2.TabIndex = 7;
@@ -69,7 +71,7 @@
             this.iptSemester.BackgroundStyle.Class = "DateTimeInputBackground";
             this.iptSemester.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.iptSemester.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
-            this.iptSemester.Location = new System.Drawing.Point(301, 10);
+            this.iptSemester.Location = new System.Drawing.Point(361, 10);
             this.iptSemester.MaxValue = 2;
             this.iptSemester.MinValue = 1;
             this.iptSemester.Name = "iptSemester";
@@ -87,7 +89,7 @@
             // 
             this.labelX1.BackgroundStyle.Class = "";
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX1.Location = new System.Drawing.Point(70, 14);
+            this.labelX1.Location = new System.Drawing.Point(130, 14);
             this.labelX1.Name = "labelX1";
             this.labelX1.Size = new System.Drawing.Size(47, 21);
             this.labelX1.TabIndex = 5;
@@ -102,7 +104,7 @@
             this.iptSchoolYear.BackgroundStyle.Class = "DateTimeInputBackground";
             this.iptSchoolYear.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.iptSchoolYear.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
-            this.iptSchoolYear.Location = new System.Drawing.Point(123, 12);
+            this.iptSchoolYear.Location = new System.Drawing.Point(183, 12);
             this.iptSchoolYear.MaxValue = 999;
             this.iptSchoolYear.MinValue = 1;
             this.iptSchoolYear.Name = "iptSchoolYear";
@@ -118,7 +120,7 @@
             this.btnExit.AutoSize = true;
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExit.Location = new System.Drawing.Point(312, 108);
+            this.btnExit.Location = new System.Drawing.Point(431, 489);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 25);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -133,7 +135,7 @@
             this.btnExport.AutoSize = true;
             this.btnExport.BackColor = System.Drawing.Color.Transparent;
             this.btnExport.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExport.Location = new System.Drawing.Point(222, 108);
+            this.btnExport.Location = new System.Drawing.Point(341, 489);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(75, 25);
             this.btnExport.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -150,7 +152,7 @@
             this.iptClassDefault.BackgroundStyle.Class = "DateTimeInputBackground";
             this.iptClassDefault.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.iptClassDefault.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
-            this.iptClassDefault.Location = new System.Drawing.Point(301, 57);
+            this.iptClassDefault.Location = new System.Drawing.Point(361, 57);
             this.iptClassDefault.MaxValue = 6;
             this.iptClassDefault.MinValue = 1;
             this.iptClassDefault.Name = "iptClassDefault";
@@ -168,7 +170,7 @@
             // 
             this.labelX4.BackgroundStyle.Class = "";
             this.labelX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX4.Location = new System.Drawing.Point(201, 59);
+            this.labelX4.Location = new System.Drawing.Point(261, 59);
             this.labelX4.Name = "labelX4";
             this.labelX4.Size = new System.Drawing.Size(101, 21);
             this.labelX4.TabIndex = 13;
@@ -183,7 +185,7 @@
             this.iptDepDefault.BackgroundStyle.Class = "DateTimeInputBackground";
             this.iptDepDefault.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
             this.iptDepDefault.ButtonFreeText.Shortcut = DevComponents.DotNetBar.eShortcut.F2;
-            this.iptDepDefault.Location = new System.Drawing.Point(123, 57);
+            this.iptDepDefault.Location = new System.Drawing.Point(183, 57);
             this.iptDepDefault.MaxValue = 6;
             this.iptDepDefault.MinValue = 1;
             this.iptDepDefault.Name = "iptDepDefault";
@@ -201,7 +203,7 @@
             // 
             this.labelX3.BackgroundStyle.Class = "";
             this.labelX3.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX3.Location = new System.Drawing.Point(16, 59);
+            this.labelX3.Location = new System.Drawing.Point(76, 59);
             this.labelX3.Name = "labelX3";
             this.labelX3.Size = new System.Drawing.Size(101, 21);
             this.labelX3.TabIndex = 11;
@@ -219,11 +221,28 @@
             this.lnkDepSetup.Text = "特殊類別對照";
             this.lnkDepSetup.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkDepSetup_LinkClicked);
             // 
+            // labelX5
+            // 
+            this.labelX5.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX5.BackgroundStyle.Class = "";
+            this.labelX5.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX5.Location = new System.Drawing.Point(16, 137);
+            this.labelX5.Name = "labelX5";
+            this.labelX5.Size = new System.Drawing.Size(504, 346);
+            this.labelX5.TabIndex = 16;
+            this.labelX5.Text = resources.GetString("labelX5.Text");
+            this.labelX5.TextLineAlignment = System.Drawing.StringAlignment.Near;
+            this.labelX5.WordWrap = true;
+            // 
             // StudentDataNReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(413, 144);
+            this.ClientSize = new System.Drawing.Size(532, 525);
+            this.Controls.Add(this.labelX5);
             this.Controls.Add(this.lnkDepSetup);
             this.Controls.Add(this.iptClassDefault);
             this.Controls.Add(this.labelX4);
@@ -261,5 +280,6 @@
         private DevComponents.Editors.IntegerInput iptDepDefault;
         private DevComponents.DotNetBar.LabelX labelX3;
         private System.Windows.Forms.LinkLabel lnkDepSetup;
+        private DevComponents.DotNetBar.LabelX labelX5;
     }
 }

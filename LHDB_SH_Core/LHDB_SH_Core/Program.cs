@@ -125,17 +125,17 @@ namespace LHDB_SH_Core
                 }
             };
 
-            catalog01.Add(new RibbonFeature("LHDB_SH_Core.Config.DepConfigForm", "部別班別代碼"));
+            //catalog01.Add(new RibbonFeature("LHDB_SH_Core.Config.DepConfigForm", "部別班別代碼"));
 
-            RibbonBarItem item06 = K12.Presentation.NLDPanels.Student.RibbonBarItems["學習歷程資料"];
-            item06["設定"].Image = Properties.Resources.設定;
-            item06["設定"].Size = RibbonBarButton.MenuButtonSize.Large;
-            item06["設定"]["部別班別代碼"].Enable = UserAcl.Current["LHDB_SH_Core.Config.DepConfigForm"].Executable;
-            item06["設定"]["部別班別代碼"].Click += delegate
-            {
-                Config.DepConfigForm dcg = new Config.DepConfigForm();
-                dcg.ShowDialog();
-            };
+            //RibbonBarItem item06 = K12.Presentation.NLDPanels.Student.RibbonBarItems["學習歷程資料"];
+            //item06["設定"].Image = Properties.Resources.設定;
+            //item06["設定"].Size = RibbonBarButton.MenuButtonSize.Large;
+            //item06["設定"]["部別班別代碼"].Enable = UserAcl.Current["LHDB_SH_Core.Config.DepConfigForm"].Executable;
+            //item06["設定"]["部別班別代碼"].Click += delegate
+            //{
+            //    Config.DepConfigForm dcg = new Config.DepConfigForm();
+            //    dcg.ShowDialog();
+            //};
 
             catalog01.Add(new RibbonFeature("LHDB_SH_Core.Config.ClassCodeConfigForm", "班級代碼"));
 

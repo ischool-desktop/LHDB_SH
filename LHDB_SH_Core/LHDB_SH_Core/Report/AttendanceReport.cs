@@ -243,15 +243,44 @@ namespace LHDB_SH_Core.Report
             // 預設學年度、學期
             iptSchoolYear.Value = int.Parse(K12.Data.School.DefaultSchoolYear);
             iptSemester.Value = int.Parse(K12.Data.School.DefaultSemester);
-            colType.DropDownStyle = ComboBoxStyle.DropDownList;
-            colPerType.DropDownStyle = ComboBoxStyle.DropDownList;
 
             // 載入代碼對照
             Dictionary<string, List<ConfigDataItem>> datas = _cd.GetConfigDataItemDict();
             Dictionary<string, string> dataDict = GetDefaultItemDict();
             List<string> dataList1 = GetDefaultPeridList();
-            Dictionary<string, string> tmpDict1 = GetDefaultItemDict1();
+            Dictionary<string, string> tmpDict1 = new Dictionary<string, string>();
             Dictionary<string, string> tmpDict2 = GetDefaultPeridDict();
+
+
+            // 載入假別
+            List<AbsenceMappingInfo> AbsenceMappingList = AbsenceMapping.SelectAll();
+            List<string> aList = new List<string>();
+            aList.Add("");
+            foreach (AbsenceMappingInfo rec in AbsenceMappingList)
+            {
+                aList.Add(rec.Name);
+                if(!tmpDict1.ContainsKey(rec.Name))
+                    tmpDict1.Add(rec.Name, rec.Name);
+            }
+            colType.Items.AddRange(aList.ToArray());
+
+            
+
+
+            // 載入節次對照
+            List<PeriodMappingInfo> PeriodMappingList = PeriodMapping.SelectAll();
+
+            // 節次>類別
+            List<string> pList = new List<string>();
+            pList.Add("");
+            foreach (PeriodMappingInfo rec in PeriodMappingList)
+                pList.Add(rec.Name);
+            colPerType.Items.AddRange(pList.ToArray());
+
+            colType.DropDownStyle = ComboBoxStyle.DropDownList;
+            colPerType.DropDownStyle = ComboBoxStyle.DropDownList;
+
+
 
             #region 讀取設定值
             // 有儲存過 假別
@@ -349,24 +378,6 @@ namespace LHDB_SH_Core.Report
 
 
 
-            // 載入假別
-            List<AbsenceMappingInfo> AbsenceMappingList = AbsenceMapping.SelectAll();
-            List<string> aList = new List<string>();
-            aList.Add("");
-            foreach (AbsenceMappingInfo rec in AbsenceMappingList)
-               aList.Add(rec.Name);
-            
-            colType.Items.AddRange(aList.ToArray());
-
-            // 載入節次對照
-            List<PeriodMappingInfo> PeriodMappingList = PeriodMapping.SelectAll();
-            
-            // 節次>類別
-            List<string> pList = new List<string>();
-            pList.Add("");
-            foreach (PeriodMappingInfo rec in PeriodMappingList)
-                pList.Add(rec.Name);            
-            colPerType.Items.AddRange(pList.ToArray());
 
    
 
@@ -422,25 +433,7 @@ namespace LHDB_SH_Core.Report
             value.Add("6", "六");
             value.Add("7", "七");
             return value;
-        }
-
-        private Dictionary<string, string> GetDefaultItemDict1()
-        {
-            Dictionary<string, string> value = new Dictionary<string, string>();
-            value.Add("公假", "公假");
-            value.Add("事假", "事假");
-            value.Add("病假", "病假");
-            value.Add("婚假", "婚假");
-            value.Add("產前假", "產前假");
-            value.Add("娩假", "娩假");
-            value.Add("陪產假", "陪產假");
-            value.Add("流產假", "流產假");
-            value.Add("育嬰假", "育嬰假");
-            value.Add("生理假", "生理假");
-            value.Add("喪假", "喪假");
-            value.Add("曠課", "曠課");
-            return value;
-        }
+        }            
 
     }
 }
