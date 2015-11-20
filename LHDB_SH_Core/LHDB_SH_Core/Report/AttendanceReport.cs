@@ -250,6 +250,8 @@ namespace LHDB_SH_Core.Report
             Dictionary<string, List<ConfigDataItem>> datas = _cd.GetConfigDataItemDict();
             Dictionary<string, string> dataDict = GetDefaultItemDict();
             List<string> dataList1 = GetDefaultPeridList();
+            Dictionary<string, string> tmpDict1 = GetDefaultItemDict1();
+            Dictionary<string, string> tmpDict2 = GetDefaultPeridDict();
 
             #region 讀取設定值
             // 有儲存過 假別
@@ -273,8 +275,11 @@ namespace LHDB_SH_Core.Report
                     {
                         rowIdx = dgData.Rows.Add();
                         dgData.Rows[rowIdx].Cells[colName.Index].Value = key;
-                        dgData.Rows[rowIdx].Cells[colValue.Index].Value = dataDict[key];
-                        dgData.Rows[rowIdx].Cells[colType.Index].Value = "";
+                        dgData.Rows[rowIdx].Cells[colValue.Index].Value = dataDict[key];                                                
+                        if (tmpDict1.ContainsKey(key))
+                            dgData.Rows[rowIdx].Cells[colType.Index].Value = tmpDict1[key];
+                        else
+                            dgData.Rows[rowIdx].Cells[colType.Index].Value = "";
                     }
                 }
             }
@@ -285,8 +290,11 @@ namespace LHDB_SH_Core.Report
                 {
                     int rowIdx = dgData.Rows.Add();
                     dgData.Rows[rowIdx].Cells[colName.Index].Value = key;
-                    dgData.Rows[rowIdx].Cells[colValue.Index].Value = dataDict[key];
-                    dgData.Rows[rowIdx].Cells[colType.Index].Value = "";
+                    dgData.Rows[rowIdx].Cells[colValue.Index].Value = dataDict[key];                    
+                    if (tmpDict1.ContainsKey(key))
+                        dgData.Rows[rowIdx].Cells[colType.Index].Value = tmpDict1[key];
+                    else
+                        dgData.Rows[rowIdx].Cells[colType.Index].Value = "";
                 }
             }
 
@@ -294,6 +302,7 @@ namespace LHDB_SH_Core.Report
             if (datas.ContainsKey(_ConfigName2))
             {
                 List<string> defList = new List<string>();
+                
                 int rowIdx = 0;
                 foreach (ConfigDataItem cdi in datas[_ConfigName2])
                 {
@@ -310,7 +319,9 @@ namespace LHDB_SH_Core.Report
                     {
                         rowIdx = dgPerdata.Rows.Add();
                         dgPerdata.Rows[rowIdx].Cells[colPerName.Index].Value = key;                        
-                        dgPerdata.Rows[rowIdx].Cells[colPerType.Index].Value = "";
+                        dgPerdata.Rows[rowIdx].Cells[colPerType.Index].Value ="" ;
+                        if (tmpDict2.ContainsKey(key))
+                            dgPerdata.Rows[rowIdx].Cells[colPerType.Index].Value = tmpDict2[key];
                     }
                 }
             }
@@ -322,6 +333,8 @@ namespace LHDB_SH_Core.Report
                     int rowIdx = dgPerdata.Rows.Add();
                     dgPerdata.Rows[rowIdx].Cells[colPerName.Index].Value = key;
                     dgPerdata.Rows[rowIdx].Cells[colPerType.Index].Value = "";
+                    if (tmpDict2.ContainsKey(key))
+                        dgPerdata.Rows[rowIdx].Cells[colPerType.Index].Value = tmpDict2[key];
                 }
             }
 
@@ -339,6 +352,7 @@ namespace LHDB_SH_Core.Report
             // 載入假別
             List<AbsenceMappingInfo> AbsenceMappingList = AbsenceMapping.SelectAll();
             List<string> aList = new List<string>();
+            aList.Add("");
             foreach (AbsenceMappingInfo rec in AbsenceMappingList)
                aList.Add(rec.Name);
             
@@ -349,9 +363,13 @@ namespace LHDB_SH_Core.Report
             
             // 節次>類別
             List<string> pList = new List<string>();
+            pList.Add("");
             foreach (PeriodMappingInfo rec in PeriodMappingList)
                 pList.Add(rec.Name);            
             colPerType.Items.AddRange(pList.ToArray());
+
+   
+
         }
 
         /// <summary>
@@ -392,5 +410,37 @@ namespace LHDB_SH_Core.Report
             value.Add("7");
             return value;
         }
+
+        private Dictionary<string,string> GetDefaultPeridDict()
+        {
+            Dictionary<string, string> value = new Dictionary<string, string>();
+            value.Add("1", "一");
+            value.Add("2", "二");
+            value.Add("3", "三");
+            value.Add("4", "四");
+            value.Add("5", "五");
+            value.Add("6", "六");
+            value.Add("7", "七");
+            return value;
+        }
+
+        private Dictionary<string, string> GetDefaultItemDict1()
+        {
+            Dictionary<string, string> value = new Dictionary<string, string>();
+            value.Add("公假", "公假");
+            value.Add("事假", "事假");
+            value.Add("病假", "病假");
+            value.Add("婚假", "婚假");
+            value.Add("產前假", "產前假");
+            value.Add("娩假", "娩假");
+            value.Add("陪產假", "陪產假");
+            value.Add("流產假", "流產假");
+            value.Add("育嬰假", "育嬰假");
+            value.Add("生理假", "生理假");
+            value.Add("喪假", "喪假");
+            value.Add("曠課", "曠課");
+            return value;
+        }
+
     }
 }

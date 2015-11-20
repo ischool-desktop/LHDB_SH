@@ -136,16 +136,21 @@ namespace LHDB_SH_Core
         public static Dictionary<string,string> GetClassCodeDict()
         {
             Dictionary<string, string> value = new Dictionary<string, string>();
-            QueryHelper qh = new QueryHelper();
-            string query = "select class_name,class_code from $sh.college.sat.class_code";
-            DataTable dt = qh.Select(query);
-            foreach(DataRow dr in dt.Rows)
+            try
             {
-                string cName = dr["class_name"].ToString();
-                string cCode = dr["class_code"].ToString();
-                if(!value.ContainsKey(cName))
-                    value.Add(cName,cCode);
+                QueryHelper qh = new QueryHelper();
+                string query = "select class_name,class_code from $sh.college.sat.class_code";
+                DataTable dt = qh.Select(query);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string cName = dr["class_name"].ToString();
+                    string cCode = dr["class_code"].ToString();
+                    if (!value.ContainsKey(cName))
+                        value.Add(cName, cCode);
+                }
+
             }
+            catch (Exception ex) { }
 
             return value;
         }
@@ -155,38 +160,58 @@ namespace LHDB_SH_Core
         /// </summary>
         /// <param name="StudentIDList"></param>
         /// <returns></returns>
-        public static Dictionary<string,string> GetStudDeptNameDict(List<string> StudentIDList)
+        public static Dictionary<string,string> GetStudDeptNameDict(List<string> StudentIDList,int SchoolYear,int Semester)
         {
             Dictionary<string, string> value = new Dictionary<string, string>();
-            if(StudentIDList.Count>0)
-            {
-                QueryHelper qhC1 = new QueryHelper();
-                // 取的學生所屬班級科別
-                string strC1 = "select student.id as sid,dept.name as deptName from student inner join class on student.ref_class_id=class.id inner join dept on class.ref_dept_id=dept.id where student.id in(" + string.Join(",", StudentIDList.ToArray()) + ")";
-                DataTable dtC1 = qhC1.Select(strC1);
-                foreach(DataRow dr in dtC1.Rows)
-                {
-                    string sid = dr["sid"].ToString();
-                    string deptName=dr["deptName"].ToString();
-                    if (!value.ContainsKey(sid))
-                        value.Add(sid, deptName);
-                    else
-                        value[sid] = deptName;
-                }
 
-                QueryHelper qhS1 = new QueryHelper();
-                string strS1 = "select student.id as sid,dept.name as deptName from student inner join dept on student.ref_dept_id=dept.id where student.id in(" + string.Join(",", StudentIDList.ToArray()) + ")";
-                DataTable dtS1 = qhS1.Select(strS1);
-                foreach(DataRow dr in dtS1.Rows)
+            // 如果是系統預設學年度學期,不是讀取學期對照
+            if (SchoolYear.ToString() == K12.Data.School.DefaultSchoolYear && Semester.ToString() == K12.Data.School.DefaultSemester)
+            {
+                if (StudentIDList.Count > 0)
                 {
-                    string sid = dr["sid"].ToString();
-                    string deptName = dr["deptName"].ToString();
-                    if (!value.ContainsKey(sid))
-                        value.Add(sid, deptName);
-                    else
-                        value[sid] = deptName;
+                    QueryHelper qhC1 = new QueryHelper();
+                    // 取的學生所屬班級科別
+                    string strC1 = "select student.id as sid,dept.name as deptName from student inner join class on student.ref_class_id=class.id inner join dept on class.ref_dept_id=dept.id where student.id in(" + string.Join(",", StudentIDList.ToArray()) + ")";
+                    DataTable dtC1 = qhC1.Select(strC1);
+                    foreach (DataRow dr in dtC1.Rows)
+                    {
+                        string sid = dr["sid"].ToString();
+                        string deptName = dr["deptName"].ToString();
+                        if (!value.ContainsKey(sid))
+                            value.Add(sid, deptName);
+                        else
+                            value[sid] = deptName;
+                    }
+
+                    QueryHelper qhS1 = new QueryHelper();
+                    string strS1 = "select student.id as sid,dept.name as deptName from student inner join dept on student.ref_dept_id=dept.id where student.id in(" + string.Join(",", StudentIDList.ToArray()) + ")";
+                    DataTable dtS1 = qhS1.Select(strS1);
+                    foreach (DataRow dr in dtS1.Rows)
+                    {
+                        string sid = dr["sid"].ToString();
+                        string deptName = dr["deptName"].ToString();
+                        if (!value.ContainsKey(sid))
+                            value.Add(sid, deptName);
+                        else
+                            value[sid] = deptName;
+                    }
                 }
             }
+            else
+            {
+                List<SHSemesterHistoryRecord> SHSemesterHistoryRecordList = SHSemesterHistory.SelectByStudentIDs(StudentIDList);
+                foreach (SHSemesterHistoryRecord shrec in SHSemesterHistoryRecordList)
+                {
+                    foreach (K12.Data.SemesterHistoryItem item in shrec.SemesterHistoryItems)
+                    {
+                        if (item.SchoolYear == SchoolYear && item.Semester == Semester)
+                        {
+                            if (!value.ContainsKey(item.RefStudentID))
+                                value.Add(item.RefStudentID, item.DeptName);
+                        }
+                    }
+                }
+            }          
 
             return value;
         }
@@ -245,18 +270,42 @@ namespace LHDB_SH_Core
                    }
                }
 
+               List<SHCourseRecord> CourseRecList = SHCourse.SelectBySchoolYearAndSemester(SchoolYear, Semester);
+               Dictionary<string, SHCourseRecord> CourseRecDict = new Dictionary<string, SHCourseRecord>();
+               foreach (SHCourseRecord rec in CourseRecList)
+                   if (!CourseRecDict.ContainsKey(rec.ID))
+                       CourseRecDict.Add(rec.ID, rec);
+
                QueryHelper qh = new QueryHelper();
-               string query = "select sc_attend.ref_student_id as sid,course.course_name,course.subject,sce_take.score as sce_score,course.credit as credit from sc_attend inner join course on sc_attend.ref_course_id=course.id inner join sce_take on sc_attend.id=sce_take.ref_sc_attend_id where sc_attend.ref_student_id in("+string.Join(",",StudentIDList.ToArray())+") and course.school_year="+SchoolYear+" and course.semester="+Semester+" and sce_take.ref_exam_id in("+ExamID+")";
+               string query = "select sc_attend.ref_student_id as sid,course.id as cid,course.course_name,course.subject,sce_take.score as sce_score,course.credit as credit from sc_attend inner join course on sc_attend.ref_course_id=course.id inner join sce_take on sc_attend.id=sce_take.ref_sc_attend_id where sc_attend.ref_student_id in("+string.Join(",",StudentIDList.ToArray())+") and course.school_year="+SchoolYear+" and course.semester="+Semester+" and sce_take.ref_exam_id in("+ExamID+")";
                DataTable dt = qh.Select(query);
                foreach(DataRow dr in dt.Rows)
                {
+                   string SubjCode = "";
                    string sid = dr["sid"].ToString();
                    if (!value.ContainsKey(sid))
                        value.Add(sid, new List<StudentSCETakeRec>());
 
+                   string cid = dr["cid"].ToString();
                    StudentSCETakeRec scetRec = new StudentSCETakeRec();
                    scetRec.StudentID = sid;
-                   scetRec.SubjectCode=dr["subject"].ToString();
+
+                   if(CourseRecDict.ContainsKey(cid))
+                   {
+                       string Req="",notNq="";
+                       if(CourseRecDict[cid].Required)
+                           Req="必修";
+                       else
+                           Req="選修";
+
+                       if(CourseRecDict[cid].NotIncludedInCredit)
+                           notNq="是";
+                       else
+                           notNq="否";
+
+                       SubjCode = CourseRecDict[cid].Subject + "_" + CourseRecDict[cid].Credit.Value + "_" + Req + "_" + CourseRecDict[cid].RequiredBy + "_" + CourseRecDict[cid].Entry + "_" + notNq;
+                   }
+                   scetRec.SubjectCode = SubjCode;
                    string GrStr="";
                    if (StudGradYearDict.ContainsKey(sid))
                        GrStr = StudGradYearDict[sid]+"_及";

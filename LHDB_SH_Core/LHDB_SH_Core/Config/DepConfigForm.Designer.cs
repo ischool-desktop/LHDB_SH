@@ -51,6 +51,9 @@
             // 
             this.dgDepData.AllowUserToAddRows = false;
             this.dgDepData.AllowUserToDeleteRows = false;
+            this.dgDepData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgDepData.BackgroundColor = System.Drawing.Color.White;
             this.dgDepData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgDepData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -66,7 +69,7 @@
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgDepData.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgDepData.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
-            this.dgDepData.Location = new System.Drawing.Point(20, 47);
+            this.dgDepData.Location = new System.Drawing.Point(20, 40);
             this.dgDepData.Name = "dgDepData";
             this.dgDepData.RowTemplate.Height = 24;
             this.dgDepData.Size = new System.Drawing.Size(633, 169);
@@ -104,10 +107,11 @@
             // btnSave
             // 
             this.btnSave.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.AutoSize = true;
             this.btnSave.BackColor = System.Drawing.Color.Transparent;
             this.btnSave.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnSave.Location = new System.Drawing.Point(491, 419);
+            this.btnSave.Location = new System.Drawing.Point(494, 407);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 25);
             this.btnSave.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -118,10 +122,11 @@
             // btnExit
             // 
             this.btnExit.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExit.AutoSize = true;
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExit.Location = new System.Drawing.Point(575, 419);
+            this.btnExit.Location = new System.Drawing.Point(575, 407);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 25);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -133,6 +138,9 @@
             // 
             this.dgClsData.AllowUserToAddRows = false;
             this.dgClsData.AllowUserToDeleteRows = false;
+            this.dgClsData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgClsData.BackgroundColor = System.Drawing.Color.White;
             this.dgClsData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgClsData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -148,7 +156,7 @@
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgClsData.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgClsData.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(215)))), ((int)(((byte)(229)))));
-            this.dgClsData.Location = new System.Drawing.Point(20, 249);
+            this.dgClsData.Location = new System.Drawing.Point(20, 244);
             this.dgClsData.Name = "dgClsData";
             this.dgClsData.RowTemplate.Height = 24;
             this.dgClsData.Size = new System.Drawing.Size(633, 155);
@@ -192,7 +200,7 @@
             // 
             this.labelX1.BackgroundStyle.Class = "";
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX1.Location = new System.Drawing.Point(20, 19);
+            this.labelX1.Location = new System.Drawing.Point(20, 12);
             this.labelX1.Name = "labelX1";
             this.labelX1.Size = new System.Drawing.Size(154, 21);
             this.labelX1.TabIndex = 4;
@@ -207,7 +215,7 @@
             // 
             this.labelX2.BackgroundStyle.Class = "";
             this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX2.Location = new System.Drawing.Point(20, 222);
+            this.labelX2.Location = new System.Drawing.Point(20, 217);
             this.labelX2.Name = "labelX2";
             this.labelX2.Size = new System.Drawing.Size(154, 21);
             this.labelX2.TabIndex = 5;
@@ -217,7 +225,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(674, 455);
+            this.ClientSize = new System.Drawing.Size(674, 436);
             this.Controls.Add(this.labelX2);
             this.Controls.Add(this.labelX1);
             this.Controls.Add(this.dgClsData);

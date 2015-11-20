@@ -36,6 +36,7 @@
             this.iptSchoolYear = new DevComponents.Editors.IntegerInput();
             this.lvScType = new DevComponents.DotNetBar.Controls.ListViewEx();
             this.labelX3 = new DevComponents.DotNetBar.LabelX();
+            this.lnSpecClassName = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.iptSemester)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iptSchoolYear)).BeginInit();
             this.SuspendLayout();
@@ -166,11 +167,24 @@
             this.labelX3.TabIndex = 18;
             this.labelX3.Text = "學校種類";
             // 
+            // lnSpecClassName
+            // 
+            this.lnSpecClassName.AutoSize = true;
+            this.lnSpecClassName.BackColor = System.Drawing.Color.Transparent;
+            this.lnSpecClassName.Location = new System.Drawing.Point(13, 214);
+            this.lnSpecClassName.Name = "lnSpecClassName";
+            this.lnSpecClassName.Size = new System.Drawing.Size(138, 17);
+            this.lnSpecClassName.TabIndex = 19;
+            this.lnSpecClassName.TabStop = true;
+            this.lnSpecClassName.Text = "特色班實驗班名稱對照";
+            this.lnSpecClassName.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnSpecClassName_LinkClicked);
+            // 
             // SubjectReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(386, 246);
+            this.Controls.Add(this.lnSpecClassName);
             this.Controls.Add(this.labelX3);
             this.Controls.Add(this.lvScType);
             this.Controls.Add(this.btnExit);
@@ -200,5 +214,6 @@
         private DevComponents.Editors.IntegerInput iptSchoolYear;
         private DevComponents.DotNetBar.Controls.ListViewEx lvScType;
         private DevComponents.DotNetBar.LabelX labelX3;
+        private System.Windows.Forms.LinkLabel lnSpecClassName;
     }
 }

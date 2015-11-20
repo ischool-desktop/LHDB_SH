@@ -18,7 +18,7 @@ namespace LHDB_SH_Core.Report
     {
         private int _SchoolYear = 0, _Semester = 0;
         private string _SchoolCode = "";
-
+        private string _ClassTypeCode = "";
         private ConfigData _cd;
         private string _ConfigName = "成績名冊_畫面設定";
 
@@ -107,7 +107,7 @@ namespace LHDB_SH_Core.Report
             _bgWorker.ReportProgress(10);
 
             // 取得學生科別名稱
-            Dictionary<string, string> StudeDeptNameDict = Utility.GetStudDeptNameDict(_StudentIDList);
+            Dictionary<string, string> StudeDeptNameDict = Utility.GetStudDeptNameDict(_StudentIDList,_SchoolYear,_Semester);
 
             SmartSchool.Customization.Data.AccessHelper accHelper = new SmartSchool.Customization.Data.AccessHelper();
                  // 取得學生學期科目成績
@@ -162,7 +162,7 @@ namespace LHDB_SH_Core.Report
 
 
                 // 修課班別
-                string ClClassName = "";
+                string ClClassName = _ClassTypeCode;
                 if (StudTagNameDict.ContainsKey(studRec.StudentID))
                 {
                     foreach (string str in StudTagNameDict[studRec.StudentID])
@@ -180,8 +180,11 @@ namespace LHDB_SH_Core.Report
                 }
                 else
                 {
-                    if (ClassNoMappingDict.ContainsKey(studRec.RefClass.ClassName))
-                        ClassCode = ClassNoMappingDict[studRec.RefClass.ClassName];
+                    if (K12.Data.School.DefaultSchoolYear == _SchoolYear.ToString() && K12.Data.School.DefaultSemester == _Semester.ToString())
+                    {
+                        if (ClassNoMappingDict.ContainsKey(studRec.RefClass.ClassName))
+                            ClassCode = ClassNoMappingDict[studRec.RefClass.ClassName];
+                    }
                 }
                 
                 foreach (SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo sssi in studRec.SemesterSubjectScoreList)
@@ -192,9 +195,9 @@ namespace LHDB_SH_Core.Report
                         ssr.IDNumber = IDNumber;
                         ssr.StudentID = studRec.StudentID;
                         ssr.BirthDate = BirthDate;
-                        ssr.SubjectCode = sssi.Subject;
-                        ssr.ReSubjectCode = sssi.Subject;
-                        ssr.ScSubjectCode = sssi.Subject;
+                        ssr.SubjectCode = sssi.Detail.GetAttribute("科目") + "_" + sssi.Detail.GetAttribute("開課學分數") + "_" + sssi.Detail.GetAttribute("修課必選修") + "_" + sssi.Detail.GetAttribute("修課校部訂") + "_" + sssi.Detail.GetAttribute("開課分項類別") + "_" + sssi.Detail.GetAttribute("不計學分");
+                        ssr.ReSubjectCode = sssi.Detail.GetAttribute("科目") + "_" + sssi.Detail.GetAttribute("開課學分數") + "_" + sssi.Detail.GetAttribute("修課必選修") + "_" + sssi.Detail.GetAttribute("修課校部訂") + "_" + sssi.Detail.GetAttribute("開課分項類別") + "_" + sssi.Detail.GetAttribute("不計學分");
+                        ssr.ScSubjectCode = sssi.Detail.GetAttribute("科目") + "_" + sssi.Detail.GetAttribute("開課學分數") + "_" + sssi.Detail.GetAttribute("修課必選修") + "_" + sssi.Detail.GetAttribute("修課校部訂") + "_" + sssi.Detail.GetAttribute("開課分項類別") + "_" + sssi.Detail.GetAttribute("不計學分");
 
                         ssr.SubjectCredit = sssi.Detail.GetAttribute("開課學分數");
                         // 預設值 -1
@@ -370,6 +373,13 @@ namespace LHDB_SH_Core.Report
             if (ds.ContainsKey("學期"))
                 if (ds["學期"] != "")
                     iptSemester.Value = int.Parse(ds["學期"]);
+
+            Dictionary<string, string> ds1 = _cd.GetKeyValueItem("學生名冊_畫面設定");
+
+            if (ds1.ContainsKey("班別代碼預設值"))
+                if (ds1["班別代碼預設值"] != "")
+                    _ClassTypeCode = "00" + ds1["班別代碼預設值"];
+
         }
 
         private void btnExport_Click(object sender, EventArgs e)

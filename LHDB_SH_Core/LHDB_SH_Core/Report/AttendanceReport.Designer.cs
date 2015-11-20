@@ -36,9 +36,6 @@
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
             this.iptSemester = new DevComponents.Editors.IntegerInput();
             this.dgData = new DevComponents.DotNetBar.Controls.DataGridViewX();
-            this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colType = new DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn();
             this.btnExport = new DevComponents.DotNetBar.ButtonX();
             this.btnExit = new DevComponents.DotNetBar.ButtonX();
             this.labelX3 = new DevComponents.DotNetBar.LabelX();
@@ -47,6 +44,9 @@
             this.colPerName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPerType = new DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colType = new DevComponents.DotNetBar.Controls.DataGridViewComboBoxExColumn();
             ((System.ComponentModel.ISupportInitialize)(this.iptSchoolYear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iptSemester)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).BeginInit();
@@ -144,32 +144,6 @@
             this.dgData.RowTemplate.Height = 24;
             this.dgData.Size = new System.Drawing.Size(360, 262);
             this.dgData.TabIndex = 4;
-            // 
-            // colName
-            // 
-            this.colName.HeaderText = "缺勤種類";
-            this.colName.Name = "colName";
-            this.colName.ReadOnly = true;
-            // 
-            // colValue
-            // 
-            this.colValue.HeaderText = "缺曠代碼";
-            this.colValue.Name = "colValue";
-            this.colValue.ReadOnly = true;
-            // 
-            // colType
-            // 
-            this.colType.DisplayMember = "Text";
-            this.colType.DropDownHeight = 106;
-            this.colType.DropDownWidth = 121;
-            this.colType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.colType.HeaderText = "假別名稱";
-            this.colType.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.colType.IntegralHeight = false;
-            this.colType.ItemHeight = 17;
-            this.colType.Name = "colType";
-            this.colType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.colType.RightToLeft = System.Windows.Forms.RightToLeft.No;
             // 
             // btnExport
             // 
@@ -278,6 +252,30 @@
             this.colPerType.Name = "colPerType";
             this.colPerType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.colPerType.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            // 
+            // colName
+            // 
+            this.colName.HeaderText = "缺勤種類";
+            this.colName.Name = "colName";
+            this.colName.ReadOnly = true;
+            // 
+            // colValue
+            // 
+            this.colValue.HeaderText = "缺曠代碼";
+            this.colValue.Name = "colValue";
+            this.colValue.ReadOnly = true;
+            // 
+            // colType
+            // 
+            this.colType.DropDownHeight = 106;
+            this.colType.DropDownWidth = 121;
+            this.colType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.colType.HeaderText = "假別名稱";
+            this.colType.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.colType.ItemHeight = 17;
+            this.colType.Name = "colType";
+            this.colType.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.colType.RightToLeft = System.Windows.Forms.RightToLeft.No;
             // 
             // AttendanceReport
             // 

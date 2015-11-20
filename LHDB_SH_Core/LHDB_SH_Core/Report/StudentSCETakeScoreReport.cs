@@ -19,6 +19,7 @@ namespace LHDB_SH_Core.Report
         private int _SchoolYear = 0, _Semester = 0, _ExamNo=0;
         private string _SchoolCode = "";
         private string _ConfigName = "定期考查名冊_畫面設定";
+        private string _ClassTypeCode = "000";
         private ConfigData _cd;
         
         // 名冊別
@@ -80,7 +81,7 @@ namespace LHDB_SH_Core.Report
             List<SHStudentTagRecord> SHStudentTagRecordList = SHStudentTag.SelectByStudentIDs(_StudentIDList);
 
             // 取得學生科別名稱
-            Dictionary<string, string> StudeDeptNameDict = Utility.GetStudDeptNameDict(_StudentIDList);
+            Dictionary<string, string> StudeDeptNameDict = Utility.GetStudDeptNameDict(_StudentIDList,_SchoolYear,_Semester);
 
             // 取得學生類別
             foreach (SHStudentTagRecord TRec in SHStudentTagRecordList)
@@ -141,7 +142,7 @@ namespace LHDB_SH_Core.Report
 
 
                     // 修課班別
-                    string ClClassName="000";
+                    string ClClassName=_ClassTypeCode;
                     if (StudTagNameDict.ContainsKey(StudRec.ID))
                     {
                         foreach (string str in StudTagNameDict[StudRec.ID])
@@ -159,11 +160,14 @@ namespace LHDB_SH_Core.Report
                     }
                     else
                     {
-                        if (ClassIDNameDict.ContainsKey(StudRec.RefClassID))
+                        if(K12.Data.School.DefaultSchoolYear==_SchoolYear.ToString() && K12.Data.School.DefaultSemester==_Semester.ToString())
                         {
-                            string cName = ClassIDNameDict[StudRec.RefClassID];
-                            if (ClassNoMappingDict.ContainsKey(cName))
-                                ClassCode = ClassNoMappingDict[cName];
+                            if (ClassIDNameDict.ContainsKey(StudRec.RefClassID))
+                            {
+                                string cName = ClassIDNameDict[StudRec.RefClassID];
+                                if (ClassNoMappingDict.ContainsKey(cName))
+                                    ClassCode = ClassNoMappingDict[cName];
+                            }
                         }
                     }
 
@@ -279,10 +283,15 @@ namespace LHDB_SH_Core.Report
             if (ds.ContainsKey("段考別"))
                 if (ds["段考別"] != "")
                     iptExamNo.Value = int.Parse(ds["段考別"]);
-                        
+
             if (ds.ContainsKey("試別"))
                 cboExam.Text = ds["試別"];
-        }
 
+            Dictionary<string, string> ds1 = _cd.GetKeyValueItem("學生名冊_畫面設定");
+
+            if (ds1.ContainsKey("班別代碼預設值"))
+                if (ds1["班別代碼預設值"] != "")
+                    _ClassTypeCode = "00" + ds1["班別代碼預設值"];
+        }        
     }
 }

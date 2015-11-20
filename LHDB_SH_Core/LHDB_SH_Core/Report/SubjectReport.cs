@@ -22,6 +22,7 @@ namespace LHDB_SH_Core.Report
         private string _SchoolCode = "";
 
         private string _ConfigName = "科目名冊_畫面設定";
+        string _ConfigClassName = "特色班實驗班名稱對照";
 
         // 名冊別,學校種類
         private string _DocType = "4",_SchoolType="";
@@ -78,8 +79,27 @@ namespace LHDB_SH_Core.Report
             // 科別對照
             DeptMappingDict = Utility.GetDepartmetDict();
 
+            
+            // 取得學生學期對照班級
+            Dictionary<string, string> classNameDict = new Dictionary<string, string>();
+            List<SHSemesterHistoryRecord> SHSemesterHistoryRecordList = SHSemesterHistory.SelectByStudentIDs(_StudentIDList);
+            foreach(SHSemesterHistoryRecord rec in SHSemesterHistoryRecordList)
+            {
+                foreach(K12.Data.SemesterHistoryItem item in rec.SemesterHistoryItems)
+                {
+                    if(item.SchoolYear==_SchoolYear && item.Semester == _Semester)
+                    {
+                        if (!classNameDict.ContainsKey(rec.RefStudentID))
+                            classNameDict.Add(rec.RefStudentID, item.ClassName);
+                    }
+                }
+            }
+
+            // 取得特色班對照
+            Dictionary<string, string> SpecClassNameDict = _cd.GetKeyValueItem(_ConfigClassName);
+
             // 取得學生科別名稱
-            Dictionary<string, string> StudeDeptNameDict = Utility.GetStudDeptNameDict(_StudentIDList);
+            Dictionary<string, string> StudeDeptNameDict = Utility.GetStudDeptNameDict(_StudentIDList,_SchoolYear,_Semester);
 
             Dictionary<string, SubjectRec> SubjectRecDict = new Dictionary<string, SubjectRec>();
             SmartSchool.Customization.Data.AccessHelper accHelper = new SmartSchool.Customization.Data.AccessHelper ();
@@ -88,6 +108,12 @@ namespace LHDB_SH_Core.Report
             accHelper.StudentHelper.FillSemesterSubjectScore(true, StudentRecList);
             foreach(SmartSchool.Customization.Data.StudentRecord studRec in StudentRecList)
             {
+
+                string studClassName =studRec.RefClass.ClassName;
+
+                if (classNameDict.ContainsKey(studRec.StudentID))
+                    studClassName = classNameDict[studRec.StudentID];
+
                 // 科別
                 string DeptName = "";
                 if (StudeDeptNameDict.ContainsKey(studRec.StudentID))
@@ -99,7 +125,9 @@ namespace LHDB_SH_Core.Report
                     {
                         
                         // 需要加入科別，上傳測試過程科別也是key
-                        string key =DeptName+ sssi.Detail.GetAttribute("不計學分") + sssi.Detail.GetAttribute("修課必選修") + sssi.Detail.GetAttribute("修課校部訂") + sssi.Detail.GetAttribute("科目") + sssi.Detail.GetAttribute("開課分項類別");
+                        string SubjCode = sssi.Detail.GetAttribute("科目") + "_" + sssi.Detail.GetAttribute("開課學分數") + "_" + sssi.Detail.GetAttribute("修課必選修") + "_" + sssi.Detail.GetAttribute("修課校部訂") + "_" + sssi.Detail.GetAttribute("開課分項類別") + "_" + sssi.Detail.GetAttribute("不計學分");
+                        string key = DeptName + SubjCode;
+
                         if (!SubjectRecDict.ContainsKey(key))
                         {
                             SubjectRec sr = new SubjectRec();
@@ -116,7 +144,7 @@ namespace LHDB_SH_Core.Report
                                 if (GroupIDDict.ContainsKey(DCLCode))
                                     GroupID = GroupIDDict[DCLCode];
                             }
-                            sr.Code = sssi.Detail.GetAttribute("科目");
+                            sr.Code = SubjCode;
                             sr.Name = sssi.Detail.GetAttribute("科目");
                             sr.CourseType = sssi.Detail.GetAttribute("修課校部訂") + sssi.Detail.GetAttribute("開課分項類別") + sssi.Detail.GetAttribute("修課必選修");
                             sr.DLCCode = DCLCode;
@@ -125,6 +153,9 @@ namespace LHDB_SH_Core.Report
                             sr.isCalc = sssi.Detail.GetAttribute("不計學分");
                             sr.Required = sssi.Detail.GetAttribute("修課必選修");
                             sr.SpcType = "";
+                            if (SpecClassNameDict.ContainsKey(studClassName))
+                                sr.SpcType = SpecClassNameDict[studClassName];
+
                             SubjectRecDict.Add(key, sr);
                         }
 
@@ -321,6 +352,14 @@ namespace LHDB_SH_Core.Report
             value.Add("校定專精選修", "12");
 
             return value;
+        }
+
+        private void lnSpecClassName_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            lnSpecClassName.Enabled = false;
+            Config.SpecClassNameConfigForm sc = new Config.SpecClassNameConfigForm();
+            sc.ShowDialog();
+            lnSpecClassName.Enabled = true;
         }
     }
 }

@@ -19,6 +19,8 @@ namespace LHDB_SH_Core.Report
         private int _SchoolYear = 0, _Semester = 0;
         private string _SchoolCode = "";
         private string _ConfigName = "學生名冊_畫面設定";
+        private string _DepCode = "";
+        private string _ClassCode = "";
         private ConfigData _cd;
         // 名冊別
         private string _DocType = "1";
@@ -72,7 +74,7 @@ namespace LHDB_SH_Core.Report
             Dictionary<string, string> StudentSHClassSeatNoDict = Utility.GetStudentClassCodeSeatNo(_StudentIDList, _SchoolYear, _Semester, true);
 
             // 取得學生科別名稱
-            Dictionary<string, string> StudeDeptNameDict = Utility.GetStudDeptNameDict(_StudentIDList);
+            Dictionary<string, string> StudeDeptNameDict = Utility.GetStudDeptNameDict(_StudentIDList,_SchoolYear,_Semester);
 
             // 取得學生類別
             foreach(SHStudentTagRecord TRec in SHStudentTagRecordList)
@@ -87,7 +89,7 @@ namespace LHDB_SH_Core.Report
 
             foreach (SHClassRecord rec in SHClass.SelectAll())
                 ClassIDNameDict.Add(rec.ID, rec.Name);
-
+            
             // 部別對照
             if(cdDict.ContainsKey("部別代碼"))
             {
@@ -141,9 +143,9 @@ namespace LHDB_SH_Core.Report
                 if (StudTagNameDict.ContainsKey(studRec.ID))
                 {                    
                     // 部別
-                    sbr.DepCode = "";
+                    sbr.DepCode = _DepCode;
                     // 班別
-                    sbr.ClCode = "";
+                    sbr.ClCode = _ClassCode;
 
                     
                     foreach (string str in StudTagNameDict[studRec.ID])
@@ -165,11 +167,15 @@ namespace LHDB_SH_Core.Report
                 }
                 else
                 {
-                    if (ClassIDNameDict.ContainsKey(studRec.RefClassID))
+                    //如果學年度學期和系統預設相同
+                    if (K12.Data.School.DefaultSchoolYear == _SchoolYear.ToString() && K12.Data.School.DefaultSemester == _Semester.ToString())
                     {
-                        string cName = ClassIDNameDict[studRec.RefClassID];
-                        if (ClassNoMappingDict.ContainsKey(cName) && studRec.SeatNo.HasValue)
-                            sbr.ClassSeatCode = ClassNoMappingDict[cName] + string.Format("{0:00}", studRec.SeatNo.Value);
+                        if (ClassIDNameDict.ContainsKey(studRec.RefClassID))
+                        {
+                            string cName = ClassIDNameDict[studRec.RefClassID];
+                            if (ClassNoMappingDict.ContainsKey(cName) && studRec.SeatNo.HasValue)
+                                sbr.ClassSeatCode = ClassNoMappingDict[cName] + string.Format("{0:00}", studRec.SeatNo.Value);
+                        }
                     }
                 }
 
@@ -220,10 +226,14 @@ namespace LHDB_SH_Core.Report
                 _SchoolYear = iptSchoolYear.Value;
                 _Semester = iptSemester.Value;
                 _SchoolCode = K12.Data.School.Code;
+                _DepCode = iptDepDefault.Value.ToString();
+                _ClassCode = iptClassDefault.Value.ToString();
 
                 _cd.ClearKeyValueItem();
                 _cd.AddKeyValueItem("學年度",_SchoolYear.ToString());
                 _cd.AddKeyValueItem("學期",_Semester.ToString());
+                _cd.AddKeyValueItem("部別代碼預設值",_DepCode);
+                _cd.AddKeyValueItem("班別代碼預設值",_ClassCode);
                 _cd.SaveKeyValueItem(_ConfigName);                
 
                 _bgWorker.RunWorkerAsync();
@@ -240,6 +250,8 @@ namespace LHDB_SH_Core.Report
         {
             iptSchoolYear.Value = int.Parse(K12.Data.School.DefaultSchoolYear);
             iptSemester.Value = int.Parse(K12.Data.School.DefaultSemester);
+            iptClassDefault.Value = iptDepDefault.Value = 1;
+            
             this.MaximumSize = this.MinimumSize = this.Size;
 
                   // 讀取預設值
@@ -250,7 +262,22 @@ namespace LHDB_SH_Core.Report
               if (ds.ContainsKey("學期"))
                   if (ds["學期"] != "")
                       iptSemester.Value = int.Parse(ds["學期"]);
-      
+
+              if (ds.ContainsKey("部別代碼預設值"))
+                  if (ds["部別代碼預設值"] != "")
+                      iptDepDefault.Value= int.Parse(ds["部別代碼預設值"]);
+
+              if (ds.ContainsKey("班別代碼預設值"))
+                  if (ds["班別代碼預設值"] != "")
+                      iptClassDefault.Value = int.Parse(ds["班別代碼預設值"]);
+        }
+
+        private void lnkDepSetup_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            lnkDepSetup.Enabled = false;
+            Config.DepConfigForm dcf = new Config.DepConfigForm();
+            dcf.ShowDialog();
+            lnkDepSetup.Enabled = true;
         }
     }
 }

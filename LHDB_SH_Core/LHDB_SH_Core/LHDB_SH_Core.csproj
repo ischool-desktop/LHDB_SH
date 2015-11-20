@@ -137,6 +137,12 @@
     <Compile Include="Config\DepConfigForm.Designer.cs">
       <DependentUpon>DepConfigForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Config\SpecClassNameConfigForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Config\SpecClassNameConfigForm.Designer.cs">
+      <DependentUpon>SpecClassNameConfigForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="DAO\ConfigData.cs" />
     <Compile Include="DAO\ConfigDataItem.cs" />
     <Compile Include="DAO\StudAttendanceRec.cs" />
@@ -163,12 +169,6 @@
     </Compile>
     <Compile Include="Report\StudentSCETakeScoreReport.Designer.cs">
       <DependentUpon>StudentSCETakeScoreReport.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Report\StudentDataNNReport.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Report\StudentDataNNReport.Designer.cs">
-      <DependentUpon>StudentDataNNReport.cs</DependentUpon>
     </Compile>
     <Compile Include="Report\StudentDataNReport.cs">
       <SubType>Form</SubType>
@@ -255,6 +255,9 @@
     <EmbeddedResource Include="Config\DepConfigForm.resx">
       <DependentUpon>DepConfigForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Config\SpecClassNameConfigForm.resx">
+      <DependentUpon>SpecClassNameConfigForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -264,9 +267,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Report\StudentSCETakeScoreReport.resx">
       <DependentUpon>StudentSCETakeScoreReport.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Report\StudentDataNNReport.resx">
-      <DependentUpon>StudentDataNNReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Report\StudentDataNReport.resx">
       <DependentUpon>StudentDataNReport.cs</DependentUpon>

@@ -17,7 +17,7 @@ namespace LHDB_SH_Core.Config
         ConfigData _cd;
 
         string _ConfigDepName = "部別代碼";
-        string _ConfigClsName = "班別代碼";
+        string _ConfigClsName = "班別代碼";       
 
         public DepConfigForm()
         {
@@ -75,8 +75,7 @@ namespace LHDB_SH_Core.Config
 
        
         private void DepConfigForm_Load(object sender, EventArgs e)
-        {
-            // 
+        {                // 
             List<SHTagConfigRecord> tagRecList = SHTagConfig.SelectAll();
             List<string> TagNameList = new List<string>();
             foreach (SHTagConfigRecord rec in tagRecList)
