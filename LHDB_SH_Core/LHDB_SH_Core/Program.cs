@@ -67,6 +67,25 @@ namespace LHDB_SH_Core
                 }
             };
 
+            catalog01.Add(new RibbonFeature("LHDB_SH_Core.Report.StudentDataNNReport", "學生資料名冊(非國教署主管學校)"));
+
+            RibbonBarItem item02_1 = K12.Presentation.NLDPanels.Student.RibbonBarItems["學習歷程資料"];
+            item02_1["報表"].Image = Properties.Resources.Report;
+            item02_1["報表"].Size = RibbonBarButton.MenuButtonSize.Large;
+            item02_1["報表"]["學生資料名冊(非國教署主管學校)"].Enable = UserAcl.Current["LHDB_SH_Core.Report.StudentDataNNReport"].Executable;
+            item02_1["報表"]["學生資料名冊(非國教署主管學校)"].Click += delegate
+            {
+                if (K12.Presentation.NLDPanels.Student.SelectedSource.Count > 0)
+                {
+                    Report.StudentDataNNReport ar = new Report.StudentDataNNReport(K12.Presentation.NLDPanels.Student.SelectedSource);
+                    ar.ShowDialog();
+                }
+                else
+                {
+                    FISCA.Presentation.Controls.MsgBox.Show("請選擇學生!");
+                }
+            };
+
             catalog01.Add(new RibbonFeature("LHDB_SH_Core.Report.SubjectScoreReport", "成績名冊"));
 
             RibbonBarItem item05 = K12.Presentation.NLDPanels.Student.RibbonBarItems["學習歷程資料"];
