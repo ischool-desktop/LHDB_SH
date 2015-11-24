@@ -77,6 +77,28 @@ namespace LHDB_SH_Core.Report
             // 取得學生科別名稱
             Dictionary<string, string> StudeDeptNameDict = Utility.GetStudDeptNameDict(_StudentIDList, _SchoolYear, _Semester);
 
+            // 取得學生異動資料
+            List<SHUpdateRecordRecord> SHUpdateRecordRecordList = SHUpdateRecord.SelectByStudentIDs(_StudentIDList);
+            Dictionary<string, List<SHUpdateRecordRecord>> SHUpdateRecordRecordDict = new Dictionary<string, List<SHUpdateRecordRecord>>();
+            // 沒有核准日期文號不排入，並符合所選的學年度學期
+            foreach(SHUpdateRecordRecord urRec in SHUpdateRecordRecordList)
+            {   
+                if (string.IsNullOrWhiteSpace(urRec.ADDate) || string.IsNullOrWhiteSpace(urRec.ADNumber))
+                    continue;
+
+                if(urRec.SchoolYear.HasValue && urRec.Semester.HasValue)
+                {
+                    if (urRec.SchoolYear <= _SchoolYear && urRec.Semester <= _Semester)
+                    {
+                        if (!SHUpdateRecordRecordDict.ContainsKey(urRec.StudentID))
+                            SHUpdateRecordRecordDict.Add(urRec.StudentID, new List<SHUpdateRecordRecord>());
+
+                        SHUpdateRecordRecordDict[urRec.StudentID].Add(urRec);
+                    }
+                }
+
+            }
+
             // 取得學生類別
             foreach (SHStudentTagRecord TRec in SHStudentTagRecordList)
             {
@@ -129,9 +151,14 @@ namespace LHDB_SH_Core.Report
                 // 身分證號,出生日期,所屬學校代碼,科/班/學程別代碼,部別,班別,班級座號代碼
                 StudentBaseRec sbr = new StudentBaseRec();
                 sbr.StudentNumber = studRec.StudentNumber;
-                sbr.IDNumber = studRec.IDNumber;
+                sbr.IDNumber = studRec.IDNumber.ToUpper();
                 sbr.BirthDate = Utility.ConvertChDateString(studRec.Birthday);
                 sbr.SchoolCode = _SchoolCode;
+                sbr.Name = studRec.Name;
+                if (studRec.Gender == "男")
+                    sbr.GenderCode = "1";
+                if (studRec.Gender == "女")
+                    sbr.GenderCode = "2";
 
                 // 科/班/學程別代碼
                 sbr.DCLCode = "";
@@ -166,6 +193,8 @@ namespace LHDB_SH_Core.Report
                 if (StudentSHClassSeatNoDict.ContainsKey(studRec.ID))
                 {
                     sbr.ClassSeatCode = StudentSHClassSeatNoDict[studRec.ID];
+                    if(sbr.ClassSeatCode.Length==5)
+                        sbr.ClassCode=sbr.ClassSeatCode.Substring(0,3);
                 }
                 else
                 {
@@ -176,11 +205,53 @@ namespace LHDB_SH_Core.Report
                         {
                             string cName = ClassIDNameDict[studRec.RefClassID];
                             if (ClassNoMappingDict.ContainsKey(cName) && studRec.SeatNo.HasValue)
+                            {
                                 sbr.ClassSeatCode = ClassNoMappingDict[cName] + string.Format("{0:00}", studRec.SeatNo.Value);
+                                sbr.ClassCode=ClassNoMappingDict[cName];
+                            }
                         }
                     }
                 }
 
+                // 處理異動相關
+                if(SHUpdateRecordRecordDict.ContainsKey(studRec.ID))
+                {
+                    // 排序
+                    List<SHUpdateRecordRecord> UrDataList = (from data in SHUpdateRecordRecordDict[studRec.ID] orderby DateTime.Parse(data.ADDate) descending, int.Parse(data.ID) descending select data).ToList();
+
+                    if(UrDataList.Count>0)
+                    {
+                        SHUpdateRecordRecord rec = UrDataList[0];
+                        sbr.PermrecCode = rec.UpdateCode;
+                        DateTime dt =DateTime.Parse(rec.UpdateDate);
+                        sbr.PermrecDate = Utility.ConvertChDateString(dt);
+
+                        sbr.OrBirthDate = "-1";
+                        sbr.OrIDNumber = "-1";
+                        sbr.Remak1 = rec.IDNumberComment;
+                        sbr.SpCode = rec.SpecialStatus;
+                    }
+                    foreach(SHUpdateRecordRecord rec in UrDataList)
+                    {
+                        // 再次檢查身分證與生日是否有差異
+                        int iUcode = int.Parse(rec.UpdateCode);
+                        if(iUcode> 400 && iUcode <411)
+                        {
+                            if (rec.IDNumber.ToUpper() != studRec.IDNumber.ToUpper())
+                                sbr.OrIDNumber = rec.IDNumber.ToUpper();
+
+                            if(studRec.Birthday.HasValue)
+                            {
+                                if(studRec.Birthday.Value.ToShortDateString()!= rec.Birthdate)
+                                {
+                                    DateTime dto = DateTime.Parse(rec.Birthdate);
+                                    sbr.OrBirthDate = Utility.ConvertChDateString(dto);
+                                }
+                            }
+                        }
+                    }
+                }
+                
                 StudentBaseRecList.Add(sbr);
             }
             _bgWorker.ReportProgress(80);
@@ -188,13 +259,82 @@ namespace LHDB_SH_Core.Report
             // 排序 班級座號代碼
             StudentBaseRecList = (from data in StudentBaseRecList orderby data.ClassSeatCode ascending select data).ToList();
 
+            // 統計人數
+            Dictionary<string, StudentBaseRecCount> StudentBaseRecCountDict = new Dictionary<string, StudentBaseRecCount>();
+
+            foreach(StudentBaseRec rec in StudentBaseRecList)
+            {
+                string key = rec.ClCode + rec.DCLCode + rec.DepCode + rec.ClassCode;
+
+                if(!StudentBaseRecCountDict.ContainsKey(key))
+                {
+                    StudentBaseRecCount sbrc = new StudentBaseRecCount();
+                    sbrc.ClassCode = rec.ClassCode;
+                    sbrc.ClCode = rec.ClCode;
+                    sbrc.DCLCode = rec.DCLCode;
+                    sbrc.DepCode = rec.DepCode;
+                    sbrc.DocType = _DocType;
+                    sbrc.SchoolCode = _SchoolCode;
+                    sbrc.SchoolYear = _SchoolYear;
+                    sbrc.Semester = _Semester;
+                    sbrc.StudentCount = 0;
+                    StudentBaseRecCountDict.Add(key, sbrc);
+                }
+                StudentBaseRecCountDict[key].StudentCount++;
+            }
+
+            List<StudentBaseRecCount> StudentBaseRecCountList = new List<StudentBaseRecCount>();
+            foreach (string Key in StudentBaseRecCountDict.Keys)
+                StudentBaseRecCountList.Add(StudentBaseRecCountDict[Key]);
+
+            // 排序,依班級代碼
+            StudentBaseRecCountList = (from data in StudentBaseRecCountList orderby data.ClassCode ascending select data).ToList();
+            
+
             // 填值到 Excel
             _wb = new Workbook(new MemoryStream(Properties.Resources.學生資料名冊樣板_非國教署主管學校_));
             Worksheet wst1 = _wb.Worksheets["學生資料名冊封面"];
             Worksheet wst2 = _wb.Worksheets["學生資料名冊"];
 
+            int rowIdx = 1;
+            foreach(StudentBaseRecCount sbrc in StudentBaseRecCountList)
+            {
+                //學校代碼 0,學年度 1,學期 2,名冊別 3,科/班/學程別代碼 4,年級班級代碼 5,部別 6,班別 7,班級人數 8
+                wst1.Cells[rowIdx, 0].PutValue(sbrc.SchoolCode);
+                wst1.Cells[rowIdx, 1].PutValue(sbrc.SchoolYear);
+                wst1.Cells[rowIdx, 2].PutValue(sbrc.Semester);
+                wst1.Cells[rowIdx, 3].PutValue(sbrc.DocType);
+                wst1.Cells[rowIdx, 4].PutValue(sbrc.DCLCode);
+                wst1.Cells[rowIdx, 5].PutValue(sbrc.ClassCode);
+                wst1.Cells[rowIdx, 6].PutValue(sbrc.DepCode);
+                wst1.Cells[rowIdx, 7].PutValue(sbrc.ClCode);
+                wst1.Cells[rowIdx, 8].PutValue(sbrc.StudentCount);
+                rowIdx++;
+            }
 
-            
+            rowIdx = 1;
+            foreach (StudentBaseRec sbr in StudentBaseRecList)
+            {
+                // 學號 0,身分證號 1,註1 2,姓名 3,性別代碼 4,出生日期 5,所屬學校代碼 6,科/班/學程別代碼 7,部別 8,
+                //班別 9,班級座號代碼 10,特殊身分代碼 11,原身分證號 12,原出生日期 13,學籍狀態代碼 14,學籍狀態生效日期 15
+                wst2.Cells[rowIdx, 0].PutValue(sbr.StudentNumber);
+                wst2.Cells[rowIdx, 1].PutValue(sbr.IDNumber);
+                wst2.Cells[rowIdx, 2].PutValue(sbr.Remak1);
+                wst2.Cells[rowIdx, 3].PutValue(sbr.Name);
+                wst2.Cells[rowIdx, 4].PutValue(sbr.GenderCode);
+                wst2.Cells[rowIdx, 5].PutValue(sbr.BirthDate);
+                wst2.Cells[rowIdx, 6].PutValue(sbr.SchoolCode);
+                wst2.Cells[rowIdx, 7].PutValue(sbr.DCLCode);
+                wst2.Cells[rowIdx, 8].PutValue(sbr.DepCode);                
+                wst2.Cells[rowIdx, 9].PutValue(sbr.ClCode);
+                wst2.Cells[rowIdx, 10].PutValue(sbr.ClassSeatCode);
+                wst2.Cells[rowIdx, 11].PutValue(sbr.SpCode);
+                wst2.Cells[rowIdx, 12].PutValue(sbr.OrIDNumber);
+                wst2.Cells[rowIdx, 13].PutValue(sbr.OrBirthDate);
+                wst2.Cells[rowIdx, 14].PutValue(sbr.PermrecCode);
+                wst2.Cells[rowIdx, 15].PutValue(sbr.PermrecDate);
+                rowIdx++;
+            }            
             
             _bgWorker.ReportProgress(100);
         }
@@ -266,6 +406,32 @@ namespace LHDB_SH_Core.Report
             Config.DepConfigForm dcf = new Config.DepConfigForm();
             dcf.ShowDialog();
             lnkDepSetup.Enabled = true;
+        }
+
+        private void StudentDataNNReport_Load(object sender, EventArgs e)
+        {
+            iptSchoolYear.Value = int.Parse(K12.Data.School.DefaultSchoolYear);
+            iptSemester.Value = int.Parse(K12.Data.School.DefaultSemester);
+            iptClassDefault.Value = iptDepDefault.Value = 1;
+
+            this.MaximumSize = this.MinimumSize = this.Size;
+
+            // 讀取預設值
+            Dictionary<string, string> ds = _cd.GetKeyValueItem(_ConfigName);
+            if (ds.ContainsKey("學年度"))
+                if (ds["學年度"] != "")
+                    iptSchoolYear.Value = int.Parse(ds["學年度"]);
+            if (ds.ContainsKey("學期"))
+                if (ds["學期"] != "")
+                    iptSemester.Value = int.Parse(ds["學期"]);
+
+            if (ds.ContainsKey("部別代碼預設值"))
+                if (ds["部別代碼預設值"] != "")
+                    iptDepDefault.Value = int.Parse(ds["部別代碼預設值"]);
+
+            if (ds.ContainsKey("班別代碼預設值"))
+                if (ds["班別代碼預設值"] != "")
+                    iptClassDefault.Value = int.Parse(ds["班別代碼預設值"]);
         }
     }
 }

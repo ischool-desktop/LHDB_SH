@@ -127,7 +127,7 @@ namespace LHDB_SH_Core.Report
             {
                 // 身分證號,出生日期,所屬學校代碼,科/班/學程別代碼,部別,班別,班級座號代碼
                 StudentBaseRec sbr = new StudentBaseRec();
-                sbr.IDNumber = studRec.IDNumber;
+                sbr.IDNumber = studRec.IDNumber.ToUpper();
                 sbr.BirthDate = Utility.ConvertChDateString(studRec.Birthday);
                 sbr.SchoolCode = _SchoolCode;
 

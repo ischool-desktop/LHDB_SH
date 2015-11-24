@@ -69,6 +69,11 @@ namespace LHDB_SH_Core.DAO
         /// 班級座號代碼
         /// </summary>
         public string ClassSeatCode { get; set; }
+
+        /// <summary>
+        /// 班級代碼
+        /// </summary>
+        public string ClassCode { get; set; }
         
         /// <summary>
         /// 特殊身分代碼

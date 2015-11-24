@@ -254,6 +254,7 @@
             this.DoubleBuffered = true;
             this.Name = "StudentDataNNReport";
             this.Text = "學生資料名冊(非國教署主管學校)";
+            this.Load += new System.EventHandler(this.StudentDataNNReport_Load);
             ((System.ComponentModel.ISupportInitialize)(this.iptSemester)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.iptSchoolYear)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.iptClassDefault)).EndInit();
