@@ -140,12 +140,14 @@ namespace LHDB_SH_Core.Report
                         sbr.DCLCode=DeptMappingDict[name];
                 }
 
+                // 部別
+                sbr.DepCode = _DepCode;
+                // 班別
+                sbr.ClCode = _ClassCode;
+
                 if (StudTagNameDict.ContainsKey(studRec.ID))
                 {                    
-                    // 部別
-                    sbr.DepCode = _DepCode;
-                    // 班別
-                    sbr.ClCode = _ClassCode;
+               
 
                     
                     foreach (string str in StudTagNameDict[studRec.ID])
