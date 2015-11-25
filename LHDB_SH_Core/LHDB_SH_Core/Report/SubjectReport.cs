@@ -109,7 +109,9 @@ namespace LHDB_SH_Core.Report
             foreach(SmartSchool.Customization.Data.StudentRecord studRec in StudentRecList)
             {
 
-                string studClassName =studRec.RefClass.ClassName;
+                string studClassName = "";
+                if(studRec.RefClass !=null)
+                    studClassName = studRec.RefClass.ClassName;
 
                 if (classNameDict.ContainsKey(studRec.StudentID))
                     studClassName = classNameDict[studRec.StudentID];

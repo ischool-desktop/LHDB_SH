@@ -251,7 +251,8 @@ namespace LHDB_SH_Core
                foreach(SmartSchool.Customization.Data.StudentRecord rec in StudentRecList)
                {
                    if (!StudGradYearDict.ContainsKey(rec.StudentID))
-                       StudGradYearDict.Add(rec.StudentID, rec.RefClass.GradeYear);
+                       if(rec.RefClass !=null)
+                            StudGradYearDict.Add(rec.StudentID, rec.RefClass.GradeYear);
                }
 
                // 取得學期對照年為主
