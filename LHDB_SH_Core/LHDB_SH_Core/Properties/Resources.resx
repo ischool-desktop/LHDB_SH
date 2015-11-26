@@ -133,6 +133,18 @@
   <data name="成績名冊樣版" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\template\成績名冊樣版.xls;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="畫面說明_學生資料名冊" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\template\畫面說明-學生資料名冊.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="畫面說明_定期考查成績名冊" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\template\畫面說明-定期考查成績名冊.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="畫面說明_成績名冊" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\template\畫面說明-成績名冊.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="畫面說明_科目名冊" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\template\畫面說明-科目名冊.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
   <data name="科目名冊樣板" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\template\科目名冊樣板.xls;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

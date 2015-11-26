@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SubjectReport));
             this.btnExit = new DevComponents.DotNetBar.ButtonX();
             this.btnExport = new DevComponents.DotNetBar.ButtonX();
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
@@ -38,7 +37,7 @@
             this.lvScType = new DevComponents.DotNetBar.Controls.ListViewEx();
             this.labelX3 = new DevComponents.DotNetBar.LabelX();
             this.lnSpecClassName = new System.Windows.Forms.LinkLabel();
-            this.labelX4 = new DevComponents.DotNetBar.LabelX();
+            this.txtDesc = new DevComponents.DotNetBar.Controls.TextBoxX();
             ((System.ComponentModel.ISupportInitialize)(this.iptSemester)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iptSchoolYear)).BeginInit();
             this.SuspendLayout();
@@ -141,6 +140,9 @@
             // 
             // lvScType
             // 
+            this.lvScType.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             // 
             // 
             // 
@@ -181,28 +183,29 @@
             this.lnSpecClassName.Text = "特色班實驗班名稱對照";
             this.lnSpecClassName.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnSpecClassName_LinkClicked);
             // 
-            // labelX4
+            // txtDesc
             // 
-            this.labelX4.BackColor = System.Drawing.Color.Transparent;
+            this.txtDesc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             // 
             // 
             // 
-            this.labelX4.BackgroundStyle.Class = "";
-            this.labelX4.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX4.Location = new System.Drawing.Point(16, 210);
-            this.labelX4.Name = "labelX4";
-            this.labelX4.Size = new System.Drawing.Size(504, 272);
-            this.labelX4.TabIndex = 20;
-            this.labelX4.Text = resources.GetString("labelX4.Text");
-            this.labelX4.TextLineAlignment = System.Drawing.StringAlignment.Near;
-            this.labelX4.WordWrap = true;
+            this.txtDesc.Border.Class = "TextBoxBorder";
+            this.txtDesc.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtDesc.Location = new System.Drawing.Point(16, 212);
+            this.txtDesc.Multiline = true;
+            this.txtDesc.Name = "txtDesc";
+            this.txtDesc.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtDesc.Size = new System.Drawing.Size(488, 256);
+            this.txtDesc.TabIndex = 20;
             // 
             // SubjectReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(533, 523);
-            this.Controls.Add(this.labelX4);
+            this.Controls.Add(this.txtDesc);
             this.Controls.Add(this.lnSpecClassName);
             this.Controls.Add(this.labelX3);
             this.Controls.Add(this.lvScType);
@@ -234,6 +237,6 @@
         private DevComponents.DotNetBar.Controls.ListViewEx lvScType;
         private DevComponents.DotNetBar.LabelX labelX3;
         private System.Windows.Forms.LinkLabel lnSpecClassName;
-        private DevComponents.DotNetBar.LabelX labelX4;
+        private DevComponents.DotNetBar.Controls.TextBoxX txtDesc;
     }
 }

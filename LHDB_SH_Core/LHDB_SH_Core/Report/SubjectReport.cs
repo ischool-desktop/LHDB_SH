@@ -313,7 +313,10 @@ namespace LHDB_SH_Core.Report
                         lvi.Checked = true;
                 }
             }
+
+            txtDesc.Text = Properties.Resources.畫面說明_科目名冊;
         }
+
 
         /// <summary>
         /// 取得學校種類

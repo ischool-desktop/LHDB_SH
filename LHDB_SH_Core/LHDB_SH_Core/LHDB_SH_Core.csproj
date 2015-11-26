@@ -244,6 +244,10 @@
     <Content Include="Library\SmartSchool.Evaluation.HS.dll" />
     <Content Include="Library\SmartSchool.Evaluation.HS.pdb" />
     <Content Include="Report.png" />
+    <Content Include="Template\畫面說明-學生資料名冊.txt" />
+    <Content Include="Template\畫面說明-定期考查成績名冊.txt" />
+    <Content Include="Template\畫面說明-成績名冊.txt" />
+    <Content Include="Template\畫面說明-科目名冊.txt" />
     <Content Include="設定.png" />
   </ItemGroup>
   <ItemGroup />
