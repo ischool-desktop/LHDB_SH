@@ -379,7 +379,7 @@ namespace LHDB_SH_Core.Report
 
             if (ds1.ContainsKey("班別代碼預設值"))
                 if (ds1["班別代碼預設值"] != "")
-                    _ClassTypeCode = "00" + ds1["班別代碼預設值"];
+                    _ClassTypeCode =  ds1["班別代碼預設值"];
 
         }
 
