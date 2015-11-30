@@ -381,6 +381,11 @@ namespace LHDB_SH_Core.Report
                 if (ds1["班別代碼預設值"] != "")
                     _ClassTypeCode =  ds1["班別代碼預設值"];
 
+            // 載入說明
+            txtDesc.Text = Properties.Resources.畫面說明_成績名冊;
+            txtDesc.ReadOnly = true;
+            txtDesc.BackColor = Color.White;
+
         }
 
         private void btnExport_Click(object sender, EventArgs e)

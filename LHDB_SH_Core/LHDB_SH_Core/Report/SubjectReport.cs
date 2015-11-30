@@ -315,6 +315,8 @@ namespace LHDB_SH_Core.Report
             }
 
             txtDesc.Text = Properties.Resources.畫面說明_科目名冊;
+            txtDesc.ReadOnly = true;
+            txtDesc.BackColor = Color.White;
         }
 
 

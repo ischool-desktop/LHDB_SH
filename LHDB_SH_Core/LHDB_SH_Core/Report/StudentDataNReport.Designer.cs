@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StudentDataNReport));
             this.labelX2 = new DevComponents.DotNetBar.LabelX();
             this.iptSemester = new DevComponents.Editors.IntegerInput();
             this.labelX1 = new DevComponents.DotNetBar.LabelX();
@@ -40,7 +39,7 @@
             this.iptDepDefault = new DevComponents.Editors.IntegerInput();
             this.labelX3 = new DevComponents.DotNetBar.LabelX();
             this.lnkDepSetup = new System.Windows.Forms.LinkLabel();
-            this.labelX5 = new DevComponents.DotNetBar.LabelX();
+            this.txtDesc = new DevComponents.DotNetBar.Controls.TextBoxX();
             ((System.ComponentModel.ISupportInitialize)(this.iptSemester)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iptSchoolYear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iptClassDefault)).BeginInit();
@@ -120,7 +119,7 @@
             this.btnExit.AutoSize = true;
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExit.Location = new System.Drawing.Point(431, 489);
+            this.btnExit.Location = new System.Drawing.Point(442, 388);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 25);
             this.btnExit.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -135,7 +134,7 @@
             this.btnExport.AutoSize = true;
             this.btnExport.BackColor = System.Drawing.Color.Transparent;
             this.btnExport.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnExport.Location = new System.Drawing.Point(341, 489);
+            this.btnExport.Location = new System.Drawing.Point(352, 388);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(75, 25);
             this.btnExport.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
@@ -221,28 +220,29 @@
             this.lnkDepSetup.Text = "特殊類別對照";
             this.lnkDepSetup.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkDepSetup_LinkClicked);
             // 
-            // labelX5
+            // txtDesc
             // 
-            this.labelX5.BackColor = System.Drawing.Color.Transparent;
+            this.txtDesc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             // 
             // 
             // 
-            this.labelX5.BackgroundStyle.Class = "";
-            this.labelX5.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX5.Location = new System.Drawing.Point(16, 137);
-            this.labelX5.Name = "labelX5";
-            this.labelX5.Size = new System.Drawing.Size(504, 346);
-            this.labelX5.TabIndex = 16;
-            this.labelX5.Text = resources.GetString("labelX5.Text");
-            this.labelX5.TextLineAlignment = System.Drawing.StringAlignment.Near;
-            this.labelX5.WordWrap = true;
+            this.txtDesc.Border.Class = "TextBoxBorder";
+            this.txtDesc.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.txtDesc.Location = new System.Drawing.Point(19, 142);
+            this.txtDesc.Multiline = true;
+            this.txtDesc.Name = "txtDesc";
+            this.txtDesc.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtDesc.Size = new System.Drawing.Size(501, 231);
+            this.txtDesc.TabIndex = 22;
             // 
             // StudentDataNReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(532, 525);
-            this.Controls.Add(this.labelX5);
+            this.ClientSize = new System.Drawing.Size(532, 424);
+            this.Controls.Add(this.txtDesc);
             this.Controls.Add(this.lnkDepSetup);
             this.Controls.Add(this.iptClassDefault);
             this.Controls.Add(this.labelX4);
@@ -280,6 +280,6 @@
         private DevComponents.Editors.IntegerInput iptDepDefault;
         private DevComponents.DotNetBar.LabelX labelX3;
         private System.Windows.Forms.LinkLabel lnkDepSetup;
-        private DevComponents.DotNetBar.LabelX labelX5;
+        private DevComponents.DotNetBar.Controls.TextBoxX txtDesc;
     }
 }

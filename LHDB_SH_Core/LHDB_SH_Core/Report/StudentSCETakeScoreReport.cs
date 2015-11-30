@@ -292,6 +292,11 @@ namespace LHDB_SH_Core.Report
             if (ds1.ContainsKey("班別代碼預設值"))
                 if (ds1["班別代碼預設值"] != "")
                     _ClassTypeCode =  ds1["班別代碼預設值"];
+
+            // 說明
+            txtDesc.Text = Properties.Resources.畫面說明_定期考查成績名冊;
+            txtDesc.ReadOnly = true;
+            txtDesc.BackColor = Color.White;
         }        
     }
 }

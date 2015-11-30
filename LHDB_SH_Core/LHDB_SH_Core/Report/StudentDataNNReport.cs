@@ -433,6 +433,11 @@ namespace LHDB_SH_Core.Report
             if (ds.ContainsKey("班別代碼預設值"))
                 if (ds["班別代碼預設值"] != "")
                     iptClassDefault.Value = int.Parse(ds["班別代碼預設值"]);
+            
+            // 說明
+            txtDesc.Text = Properties.Resources.畫面說明_學生資料名冊;
+            txtDesc.ReadOnly = true;
+            txtDesc.BackColor = Color.White;
         }
     }
 }
