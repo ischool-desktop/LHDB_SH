@@ -297,7 +297,7 @@ namespace LHDB_SH_Core.Report
             foreach(SubjectScoreRec ssr in SubjectScoreRecList)
             {
                 // 跳過補修
-                if (ssr.isScScore || ssr.isReScore)
+                if (ssr.isScScore )
                     continue;
 
                 wst2.Cells[rowIdx, 0].PutValue(ssr.IDNumber);
