@@ -218,33 +218,33 @@ namespace LHDB_SH_Core.Report
                         if(decimal.TryParse(sssi.Detail.GetAttribute("原始成績"),out ds))
                         {
                             if(ds<passScore)
-                                ssr.Score = "*" + string.Format("{0:###.00}", ds);
+                                ssr.Score = "*" + string.Format("{0:##0.00}", ds);
                             else
-                                ssr.Score = string.Format("{0:###.00}", ds);
+                                ssr.Score = string.Format("{0:##0.00}", ds);
                         }
 
                         if (decimal.TryParse(sssi.Detail.GetAttribute("重修成績"), out dsre))
                         {
                             if (dsre < passScore)
-                                ssr.ReScore = "*" + string.Format("{0:###.00}", dsre);
+                                ssr.ReScore = "*" + string.Format("{0:##0.00}", dsre);
                             else
-                                ssr.ReScore = string.Format("{0:###.00}", dsre);
+                                ssr.ReScore = string.Format("{0:##0.00}", dsre);
                         }
 
                         if (decimal.TryParse(sssi.Detail.GetAttribute("補考成績"), out dsmu))
                         {
                             if (dsmu < passScore)
-                                ssr.MuScore = "*" + string.Format("{0:###.00}", dsmu);
+                                ssr.MuScore = "*" + string.Format("{0:##0.00}", dsmu);
                             else
-                                ssr.MuScore = string.Format("{0:###.00}", dsmu);
+                                ssr.MuScore = string.Format("{0:##0.00}", dsmu);
                         }
 
                         if (decimal.TryParse(sssi.Detail.GetAttribute("原始成績"), out dssc))
                         {
                             if (dssc < passScore)
-                                ssr.ScScore = "*" + string.Format("{0:###.00}", dssc);
+                                ssr.ScScore = "*" + string.Format("{0:##0.00}", dssc);
                             else
-                                ssr.ScScore = string.Format("{0:###.00}", dssc);
+                                ssr.ScScore = string.Format("{0:##0.00}", dssc);
                         }
                         
 

@@ -323,9 +323,9 @@ namespace LHDB_SH_Core
 
                        // 不及格標 *
                        if(dd<passScore)
-                           scetRec.Score ="*"+ string.Format("{0:###.00}", dd);
+                           scetRec.Score ="*"+ string.Format("{0:##0.00}", dd);
                        else
-                        scetRec.Score = string.Format("{0:###.00}", dd);
+                        scetRec.Score = string.Format("{0:##0.00}", dd);
 
                        scetRec.Status = "1";
                    }else
