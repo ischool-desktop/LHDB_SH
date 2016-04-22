@@ -187,10 +187,12 @@ namespace LHDB_SH_Core.Report
                             ClassCode = ClassNoMappingDict[studRec.RefClass.ClassName];
                     }
                 }
-                
+
+
+                #region 一般與補修
                 foreach (SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo sssi in studRec.SemesterSubjectScoreList)
                 {
-                    if(sssi.SchoolYear==_SchoolYear && sssi.Semester == _Semester)
+                    if (sssi.SchoolYear == _SchoolYear && sssi.Semester == _Semester)
                     {
                         SubjectScoreRec ssr = new SubjectScoreRec();
                         ssr.IDNumber = IDNumber;
@@ -209,15 +211,15 @@ namespace LHDB_SH_Core.Report
                         if (StudGradYearDict.ContainsKey(studRec.StudentID))
                             GrStr = StudGradYearDict[studRec.StudentID] + "_及";
 
-                        decimal ds,dsre,dsmu,dssc, passScore = 60;
+                        decimal ds, dsre, dsmu, dssc, passScore = 60;
 
                         // 及格標準
                         if (passScoreDict[studRec.StudentID].ContainsKey(GrStr))
                             passScore = passScoreDict[studRec.StudentID][GrStr];
 
-                        if(decimal.TryParse(sssi.Detail.GetAttribute("原始成績"),out ds))
+                        if (decimal.TryParse(sssi.Detail.GetAttribute("原始成績"), out ds))
                         {
-                            if(ds<passScore)
+                            if (ds < passScore)
                                 ssr.Score = "*" + string.Format("{0:##0.00}", ds);
                             else
                                 ssr.Score = string.Format("{0:##0.00}", ds);
@@ -246,28 +248,17 @@ namespace LHDB_SH_Core.Report
                             else
                                 ssr.ScScore = string.Format("{0:##0.00}", dssc);
                         }
-                        
 
-                        ssr.isScScore=ssr.isReScore = false;
-                         
+
+                        ssr.isScScore = ssr.isReScore = false;
+
 
                         if (sssi.Detail.GetAttribute("是否補修成績") == "是")
                         {
                             ssr.isScScore = true;
                             ssr.ScSubjectGradeYearSemester = sssi.GradeYear.ToString() + sssi.Semester.ToString();
                         }
-                        if(sssi.Detail.GetAttribute("重修學年度")!="" && sssi.Detail.GetAttribute("重修學期")!="")
-                        {
-                            int sy, ss;
-                            if (int.TryParse(sssi.Detail.GetAttribute("重修學年度"), out sy))
-                                ssr.ReScoreSchoolYear = sy;
 
-                            if (int.TryParse(sssi.Detail.GetAttribute("重修學期"), out ss))
-                                ssr.ReScoreSemester = ss;
-
-                            ssr.ReSubjectSchoolYearSemester =string.Format("{0:000}",ssr.ReScoreSchoolYear) + ssr.ReScoreSemester;
-                            ssr.isReScore = true;
-                        }
                         ssr.DCLCode = DCLCode;
                         ssr.ClassName = ClassCode;
                         ssr.ClCode = ClClassName;
@@ -275,6 +266,100 @@ namespace LHDB_SH_Core.Report
                         SubjectScoreRecList.Add(ssr);
                     }
                 }
+
+                #endregion
+
+                #region 重修處理
+                foreach (SmartSchool.Customization.Data.StudentExtension.SemesterSubjectScoreInfo sssi in studRec.SemesterSubjectScoreList)
+                {
+                    int chkSy = 0, chkSS = 0;
+
+                    if (sssi.Detail.GetAttribute("重修學年度") != "" && sssi.Detail.GetAttribute("重修學期") != "")
+                    {
+                        int sy, ss;
+                        if (int.TryParse(sssi.Detail.GetAttribute("重修學年度"), out sy))
+                            chkSy = sy;
+
+                        if (int.TryParse(sssi.Detail.GetAttribute("重修學期"), out ss))
+                            chkSS = ss;
+
+                        
+                    }
+
+                    // 以有填寫重修學年度學期為主
+                    if (chkSy == _SchoolYear && chkSS == _Semester)
+                    {
+                        SubjectScoreRec ssr = new SubjectScoreRec();
+                        ssr.IDNumber = IDNumber;
+                        ssr.StudentID = studRec.StudentID;
+                        ssr.BirthDate = BirthDate;
+                        ssr.SubjectCode = sssi.Detail.GetAttribute("科目") + "_" + sssi.Detail.GetAttribute("開課學分數") + "_" + sssi.Detail.GetAttribute("修課必選修") + "_" + sssi.Detail.GetAttribute("修課校部訂") + "_" + sssi.Detail.GetAttribute("開課分項類別") + "_" + sssi.Detail.GetAttribute("不計學分");
+                        ssr.ReSubjectCode = sssi.Detail.GetAttribute("科目") + "_" + sssi.Detail.GetAttribute("開課學分數") + "_" + sssi.Detail.GetAttribute("修課必選修") + "_" + sssi.Detail.GetAttribute("修課校部訂") + "_" + sssi.Detail.GetAttribute("開課分項類別") + "_" + sssi.Detail.GetAttribute("不計學分");
+                        ssr.ScSubjectCode = sssi.Detail.GetAttribute("科目") + "_" + sssi.Detail.GetAttribute("開課學分數") + "_" + sssi.Detail.GetAttribute("修課必選修") + "_" + sssi.Detail.GetAttribute("修課校部訂") + "_" + sssi.Detail.GetAttribute("開課分項類別") + "_" + sssi.Detail.GetAttribute("不計學分");
+
+                        ssr.SubjectCredit = sssi.Detail.GetAttribute("開課學分數");
+                        // 預設值 -1
+                        ssr.Score = ssr.ScScore = ssr.ReScore = ssr.MuScore = "-1";
+
+                        string GrStr = "";
+                        if (StudGradYearDict.ContainsKey(studRec.StudentID))
+                            GrStr = StudGradYearDict[studRec.StudentID] + "_及";
+
+                        decimal ds, dsre, dsmu, dssc, passScore = 60;
+
+                        // 及格標準
+                        if (passScoreDict[studRec.StudentID].ContainsKey(GrStr))
+                            passScore = passScoreDict[studRec.StudentID][GrStr];
+
+                        if (decimal.TryParse(sssi.Detail.GetAttribute("原始成績"), out ds))
+                        {
+                            if (ds < passScore)
+                                ssr.Score = "*" + string.Format("{0:##0.00}", ds);
+                            else
+                                ssr.Score = string.Format("{0:##0.00}", ds);
+                        }
+
+                        if (decimal.TryParse(sssi.Detail.GetAttribute("重修成績"), out dsre))
+                        {
+                            if (dsre < passScore)
+                                ssr.ReScore = "*" + string.Format("{0:##0.00}", dsre);
+                            else
+                                ssr.ReScore = string.Format("{0:##0.00}", dsre);
+                        }
+
+                        if (decimal.TryParse(sssi.Detail.GetAttribute("補考成績"), out dsmu))
+                        {
+                            if (dsmu < passScore)
+                                ssr.MuScore = "*" + string.Format("{0:##0.00}", dsmu);
+                            else
+                                ssr.MuScore = string.Format("{0:##0.00}", dsmu);
+                        }
+
+                        if (decimal.TryParse(sssi.Detail.GetAttribute("原始成績"), out dssc))
+                        {
+                            if (dssc < passScore)
+                                ssr.ScScore = "*" + string.Format("{0:##0.00}", dssc);
+                            else
+                                ssr.ScScore = string.Format("{0:##0.00}", dssc);
+                        }
+
+                        ssr.isScScore = ssr.isReScore = false;
+
+                        // 使用學年度為該學年度學期
+                        ssr.ReSubjectSchoolYearSemester = string.Format("{0:000}", sssi.SchoolYear) + sssi.Semester;
+                        ssr.isReScore = true;
+
+
+                        ssr.DCLCode = DCLCode;
+                        ssr.ClassName = ClassCode;
+                        ssr.ClCode = ClClassName;
+
+                        SubjectScoreRecList.Add(ssr);
+                    }
+                }
+                #endregion
+
+                
             }
 
             _bgWorker.ReportProgress(80);
