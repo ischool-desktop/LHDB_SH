@@ -69,8 +69,6 @@
             // 
             // dgClassName
             // 
-            this.dgClassName.AllowUserToAddRows = false;
-            this.dgClassName.AllowUserToDeleteRows = false;
             this.dgClassName.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -98,7 +96,6 @@
             // 
             this.colClassName.HeaderText = "班級名稱";
             this.colClassName.Name = "colClassName";
-            this.colClassName.ReadOnly = true;
             // 
             // colSpecClassName
             // 
